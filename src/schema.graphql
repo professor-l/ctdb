@@ -1,0 +1,105 @@
+scalar DateTime
+
+enum Pronoun {
+    HE
+    SHE
+    THEY
+}
+
+enum Playstyle {
+    DAS
+    TAP
+    ROLL
+}
+
+type Query {
+    info: String!
+    # getOrganization(name: String!): Organization
+    # getEvent(name: String!): Event
+    # getUser(username: String!): User
+    getPlayer(name: String, id: Int): Player
+}
+
+# TODO
+type Mutation {
+    createPlayer(
+        name: String!,
+        playstyles: [Playstyle!],
+        country: String,
+    ): Player
+}
+
+type Authenticator {
+    token: String
+    user: User
+}
+
+type Organization {
+    id: Int!
+    name: String!
+    description: String!
+    members: [User!]!
+    events: [Event!]!
+}
+
+type Event {
+    id: Int!
+    name: String!
+    edition: String!
+    organization: Organization
+    matches: [Match!]!
+    participants: [Player!]!
+}
+
+type User {
+    id: Int!
+    username: String!
+    player: Player
+    organizations: [Organization!]
+    pronouns: [String!]
+}
+
+type Player {
+    id: Int!
+    name: String!
+    user: User
+    playstyle: [String]
+    country: String
+
+    results: [Result!]!
+    events: [Event!]!
+}
+
+type Result {
+    id: Int!
+    player: Player!
+    game: Game!
+
+    rank: Int!
+    score: Int
+}
+
+type Game {
+    id: Int!
+    results: [Result!]!
+    match: Match!
+    timestamp: DateTime
+}
+
+type Match {
+    id: Int!
+    games: [Game!]!
+    event: Event!
+    timestamp: DateTime
+    video: String
+}
+
+type EloSnapshot {
+    id: Int!
+    player: Player!
+    match: Match!
+    index: Int!
+    version: String!
+    victor: Boolean!
+    newElo: Float!
+}
