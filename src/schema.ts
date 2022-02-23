@@ -3,53 +3,12 @@ import { GraphQLContext } from "./context";
 import { Prisma } from "@prisma/client";
 import typeDefs from "./schema.graphql";
 
+import query from "./query";
+import mutation from "./mutation";
+
 const resolvers = {
-  Query: {
-    info: () => "GraphQL API for CTDB",
-    getPlayer: async (
-      parent: unknown,
-      args: { name?: string, id?: number, },
-      context: GraphQLContext,
-    ) => {
-
-      console.log(typeDefs);
-      if (args.name) {
-        return context.prisma.player.findUnique({
-          where: {
-            name: args.name,
-          }
-        });
-      }
-
-      else if (args.id) {
-        return context.prisma.player.findUnique({
-          where: {
-            id: args.id,
-          }
-        });
-      }
-    }
-  },
-
-  Mutation: {
-    createPlayer: async (
-      parent: unknown,
-      args: { name: string, country?: string },
-      context: GraphQLContext,
-    ) => {
-
-      let newPlayer: Prisma.PlayerCreateInput = {
-        name: args.name,
-      };
-
-      if (args.country)
-        newPlayer.country = args.country;
-
-      return await context.prisma.player.create({
-        data: newPlayer,
-      });
-    },
-  },
+  Query: query,
+  Mutation: mutation,
 }
 
 export const schema = makeExecutableSchema({
