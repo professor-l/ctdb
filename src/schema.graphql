@@ -18,15 +18,66 @@ type Query {
     # getEvent(name: String!): Event
     # getUser(username: String!): User
     getPlayer(name: String, id: Int): Player
+
+    # TODO: Privileged query
+    getAllPlayers: [Player!]!
 }
 
 # TODO
 type Mutation {
+
     createPlayer(
         name: String!,
         playstyles: [Playstyle!],
         country: String,
     ): Player
+
+    # TODO: all these!
+    #
+    # createOrganization(
+    #     name: String!
+    #     description: String!
+    # ): Organization
+
+    # createResult(
+    #     gameId: Int!
+    #     result: ResultCreator!
+    # ): Result
+
+    # createGame(
+    #     matchId: Int!
+    #     game: GameCreator!
+    # ): Game
+
+    # createMatch(
+    #     eventId: Int!
+    #     match: MatchCreator!
+    # ): Match
+
+    # createEvent(
+    #     organizationId: Int!
+    #     event: EventCreator!
+    # ): Event
+}
+
+type ResultCreator {
+    playerId: Int!
+    rank: Int!
+    score: Int
+}
+type GameCreator {
+    timestamp: DateTime
+    results: [ResultCreator!]
+}
+type MatchCreator {
+    timestamp: DateTime!
+    games: [GameCreator!]
+    video: String
+}
+type EventCreator {
+    name: String!
+    organizationId: Int!
+    matches: [MatchCreator!]
 }
 
 type Authenticator {
@@ -63,7 +114,7 @@ type Player {
     id: Int!
     name: String!
     user: User
-    playstyle: [String]
+    playstyles: [Playstyle!]
     country: String
 
     results: [Result!]!
@@ -90,7 +141,7 @@ type Match {
     id: Int!
     games: [Game!]!
     event: Event!
-    timestamp: DateTime
+    timestamp: DateTime!
     video: String
 }
 
