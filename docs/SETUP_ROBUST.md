@@ -18,14 +18,13 @@ To install PostgreSQL, follow the instructions for your operating system:
 <details>
     <summary>On **MacOS**</summary>
 
-    Install [homebrew](https://brew.sh/) if your system doesn't have it. Then, install postgresql with `brew install postgresql` and start the service with `brew services start postgresql`.
+    Install the appropriate version of postgresql from [here](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) - use the "Mac OS X" column (I use version 13.5 for development, anything 12 and up should be sufficient). Run the installer, using all default options, and set the superuser password as "1234".
 </details>
 
 <details>
     <summary>On **Windows**</summary>
 
-    Install the appropriate version of postgresql from [here](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) - use the "Windows x86-64" column. I use version 13.5 for development, anything 12 and up should be sufficient). Run the installer, using all default options, and make sure you either enable it to start on boot or start it manually before you begin development.
-
+    Install the appropriate version of postgresql from [here](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) - use the "Windows x86-64" column (I use version 13.5 for development, anything 12 and up should be sufficient). Run the installer, using all default options, and set the superuser password as "1234".
 </details>
 
 <details>
@@ -35,23 +34,31 @@ To install PostgreSQL, follow the instructions for your operating system:
     `sudo systemctl enable --now postgresql`
 </details>
 
-Once installed, you will need to set up your user account and development database. Open a terminal and type the following (skip the first line on Windows!):
+Once installed, you will need to set up your development database:
 
-`sudo su - postgres` (to switch to the `postgres` user)
-`psql` (to enter a postgres shell)
+<details>
+    <summary>On **Windows** or **MacOS**</summary>
 
-Next, we will create our development user (don't forget the semicolon!):
-```
-CREATE ROLE dev LOGIN SUPERUSER PASSWORD '1234';
-```
-The password '1234' is chosen because it's easy to remember, and it matters very little unless you're on a public computer, but you may use anything, as long as you remember it. You may also name the user anything (I chose `dev`) as long as you remember it.
+    Open the "pgAdmin" application, and in the topmost bar, navigate to `Object > Create > Database`. Create a database called "ctdb" - the owner "postgres" is fine for now.
+</details>
 
-Now, we will create our database:
-```
-CREATE DATABASE ctdb OWNER dev;
-```
+<details>
+    <summary>On **Linux**</summary>
 
-Finally, exit the `psql` shell with `\q` and quit out of the terminal.
+    Open a terminal and type the following:
+
+    `sudo su - postgres` (to switch to the `postgres` user)
+    `psql` (to ender a postgres shell)
+
+    Next, we will add a password to the `postgres` database account. type `\password postgres` and enter "1234" when prompted to set the password as "1234".
+
+    Finally, we can create our database:
+    ```
+    CREATE DATABASE ctdb OWNER postgres;
+    ```
+
+    Now, quit out of the shell with `\q` and exit the postgres user account with `exit`.
+</details>
 
 ### node.js and npm
 
@@ -70,13 +77,21 @@ cd ctdb
 
 ### Setup
 
+Now we can complete final setup.
+
+#### Setting the database URL
+
 From inside the project directory, we can now start the setup. First, copy the `.env.example` file (do **not** delete the original) into a new file simply called `.env`. With the command line, that's `cp .env.example .env`. Finally, edit the contents of `.env` to reflect your newly created database. Set the database url:
 
 ```
-DATABASE_URL="postgresql://dev:1234@localhost:5432/ctdb"
+DATABASE_URL="postgres://postgres:1234@localhost:5432/ctdb"
 ```
 
-Here, `dev:1234` is your username and password from the PostgreSQL setup, and `ctdb` is the name of the database.
+**Note:** On Linux, the `postgres://` prefix will instead be `postgresql://`.
+
+Here, `postgres:1234` is your username and password from the PostgreSQL setup, and `ctdb` is the name of the database. If you forget these credentials, on Windows and MacOS you can check the connection details in pgAdmin by right-clicking on the PostgreSQL server in the left naviation tree and selecting "properties". For instance, if it isn't working, check the "connection" tab to see what port postgres is running on; if it's something other than `5432`, you can edit your `.env` file accordingly.
+
+#### Node.js dependencies
 
 Next, install all dependencies with `npm install`. If your node.js or npm versions are too out of date, this step will not work.
 
@@ -84,7 +99,7 @@ Next, install all dependencies with `npm install`. If your node.js or npm versio
 
 Next, we'll run some database migrations. Migrations are how the database structure can remain consistent across development environments and in production; They track the entire history of the database's structure, and ensure that it changes in the same way and in the same chronological order across all environments. This helps avoid confusion or errors. **Every time a developer changes the structure of the database (i.e. edits `prisma.schema`), they must also generate a migration.**
 
-To run the existing migrations and bring your database up to speed, run the following command;
+To run the existing migrations and bring your database up to speed, run the following command *inside the project directory*:
 
 ```
 npx prisma migrate dev
