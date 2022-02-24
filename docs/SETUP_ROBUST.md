@@ -16,48 +16,49 @@ Our database needs a backend. Typically, for development environments, something
 To install PostgreSQL, follow the instructions for your operating system:
 
 <details>
-    <summary>On **MacOS**</summary>
+<summary>On <strong>MacOS</strong></summary>
 
-    Install the appropriate version of postgresql from [here](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) - use the "Mac OS X" column (I use version 13.5 for development, anything 12 and up should be sufficient). Run the installer, using all default options, and set the superuser password as "1234".
+Install the appropriate version of postgresql from [here](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) - use the "Mac OS X" column (I use version 13.5 for development, anything 12 and up should be sufficient). Run the installer, using all default options, and set the superuser password as "1234".
 </details>
 
 <details>
-    <summary>On **Windows**</summary>
+<summary>On <strong>Windows</strong></summary>
 
-    Install the appropriate version of postgresql from [here](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) - use the "Windows x86-64" column (I use version 13.5 for development, anything 12 and up should be sufficient). Run the installer, using all default options, and set the superuser password as "1234".
+Install the appropriate version of postgresql from [here](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) - use the "Windows x86-64" column (I use version 13.5 for development, anything 12 and up should be sufficient). Run the installer, using all default options, and set the superuser password as "1234".
 </details>
 
 <details>
-    <summary>On **Linux**</summary>
+<summary>On <strong>Linux</strong></summary>
 
-    Use your package manager to install `postgresql` if it does not come with your operating system. Be sure to enable the `systemd` service or your distro's equivalent:
-    `sudo systemctl enable --now postgresql`
+Use your package manager to install `postgresql` if it does not come with your operating system. Be sure to enable the `systemd` service or your distro's equivalent:
+
+`sudo systemctl enable --now postgresql`
 </details>
 
 Once installed, you will need to set up your development database:
 
 <details>
-    <summary>On **Windows** or **MacOS**</summary>
+<summary>On <strong>Windows</strong> or <strong>MacOS</strong></summary>
 
-    Open the "pgAdmin" application, and in the topmost bar, navigate to `Object > Create > Database`. Create a database called "ctdb" - the owner "postgres" is fine for now.
+Open the "pgAdmin" application, and in the topmost bar, navigate to `Object > Create > Database`. Create a database called "ctdb" - the owner "postgres" is fine for now.
 </details>
 
 <details>
-    <summary>On **Linux**</summary>
+<summary>On <strong>Linux</strong></summary>
 
-    Open a terminal and type the following:
+Open a terminal and type the following:
 
-    `sudo su - postgres` (to switch to the `postgres` user)
-    `psql` (to ender a postgres shell)
+`sudo su - postgres` (to switch to the `postgres` user)
+`psql` (to ender a postgres shell)
 
-    Next, we will add a password to the `postgres` database account. type `\password postgres` and enter "1234" when prompted to set the password as "1234".
+Next, we will add a password to the `postgres` database account. type `\password postgres` and enter "1234" when prompted to set the password as "1234".
 
-    Finally, we can create our database:
-    ```
-    CREATE DATABASE ctdb OWNER postgres;
-    ```
+Finally, we can create our database:
+```
+CREATE DATABASE ctdb OWNER postgres;
+```
 
-    Now, quit out of the shell with `\q` and exit the postgres user account with `exit`.
+Now, quit out of the shell with `\q` and exit the postgres user account with `exit`.
 </details>
 
 ### node.js and npm
