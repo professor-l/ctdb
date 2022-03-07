@@ -1,21 +1,21 @@
-import { GraphQLContext } from "../context";
-import { Prisma } from "@prisma/client";
+import { GraphQLContext, Playstyle } from "../context";
 
 const createPlayer = async (
   parent: unknown,
-  args: { name: string, country?: string },
+  args: { 
+    name: string,
+    country?: string,
+    playstyles?: Playstyle[],
+  },
   context: GraphQLContext,
 ) => {
 
-  let newPlayer: Prisma.PlayerCreateInput = {
-    name: args.name,
-  };
-
-  if (args.country)
-    newPlayer.country = args.country;
-
   return await context.prisma.player.create({
-    data: newPlayer,
+    data: {
+      name: args.name,
+      country: args.country,
+      playstyles: args.playstyles,
+    }
   });
 
 };

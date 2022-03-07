@@ -29,6 +29,12 @@ enum RomVersion {
   PAL_CUSTOM
 }
 
+enum MatchType {
+  FRIENDLY
+  COMPETITIVE
+  CHAMPIONSHIP
+}
+
 // Base organization model
 // CTM, CTL, CTG, CTWC are examples
 model Organization {
@@ -45,8 +51,9 @@ model Event {
   id            Int @id @default(autoincrement())
   name          String @db.VarChar(256)
   edition       String? @db.VarChar(64)
-  organizer     Organization? @relation(fields: [oragnizerId], references: [id])
-  oragnizerId   Int?
+  organizer     Organization? @relation(fields: [organizerId], references: [id])
+  organizerId   Int?
+  
   matches       Match[]
   participants  Player[]
 }
@@ -106,7 +113,8 @@ model Match {
   games       Game[]
   event       Event @relation(fields: [eventId], references: [id])
   eventId     Int
-
+  type        MatchType @default(COMPETITIVE)
+  rom         RomVersion @default(NTSC)
   eloChanges  EloSnapshot[]
   timestamp   DateTime  // required for Elo
   video       String?
@@ -120,11 +128,19 @@ model EloSnapshot {
   playerId    Int
   match       Match @relation(fields: [matchId], references: [id])
   matchId     Int
+  version     EloVersion @relation(fields: [versionId], references: [id])
+  versionId   Int
 
   index       Int // nth match for player
-  version     String
   victor      Boolean
   newElo      Float
 
-  @@unique([playerId, index, version])
+  // one elo snapshot per player, match, and version
+  @@unique([playerId, matchId, versionId])
+}
+
+model EloVersion {
+  id          Int @id @default(autoincrement())
+  version     String
+  history     EloSnapshot[]
 }
