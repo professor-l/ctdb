@@ -1,7 +1,14 @@
-import { makeExecutableSchema } from "@graphql-tools/schema";
-import { Pronoun, Playstyle, RomVersion } from "./context";
-import typeDefs from "./schema.graphql";
+import { 
+  makeExecutableSchema
+} from "@graphql-tools/schema";
 
+import { 
+  Pronoun,
+  Playstyle,
+  RomVersion,
+  MatchType
+} from "./types";
+import typeDefs from "./schema.graphql";
 import query from "./query";
 import mutation from "./mutation";
 
@@ -11,6 +18,7 @@ const resolvers = {
   Pronoun,
   Playstyle,
   RomVersion,
+  MatchType,
 
   // implemented seperately
   Query: query,

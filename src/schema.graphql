@@ -12,10 +12,23 @@ enum Playstyle {
     ROLL
 }
 
+enum RomVersion {
+    NTSC
+    PAL
+    NTSC_CUSTOM
+    PAL_CUSTOM
+}
+
+enum MatchType {
+    FRIENDLY
+    COMPETITIVE
+    CHAMPIONSHIP
+}
+
 type Query {
     info: String!
-    # getOrganization(name: String!): Organization
-    # getEvent(name: String!): Event
+    getOrganization(name: String, id: Int): Organization
+    getEvent(name: String!): Event
     # getUser(username: String!): User
     getPlayer(name: String, id: Int): Player
 
@@ -32,32 +45,27 @@ type Mutation {
         country: String,
     ): Player
 
+    createOrganization(
+        name: String!
+        description: String!
+    ): Organization
+
     # TODO: all these!
-    #
-    # createOrganization(
-    #     name: String!
-    #     description: String!
-    # ): Organization
 
-    # createResult(
-    #     gameId: Int!
-    #     result: ResultCreator!
-    # ): Result
+    createResult(
+        gameId: Int!
+        result: ResultCreator!
+    ): Result
 
-    # createGame(
-    #     matchId: Int!
-    #     game: GameCreator!
-    # ): Game
+    createGame(
+        matchId: Int!
+        game: GameCreator!
+    ): Game
 
-    # createMatch(
-    #     eventId: Int!
-    #     match: MatchCreator!
-    # ): Match
-
-    # createEvent(
-    #     organizationId: Int!
-    #     event: EventCreator!
-    # ): Event
+    createMatch(
+        eventId: Int!
+        match: MatchCreator!
+    ): Match
 }
 
 type ResultCreator {
@@ -73,11 +81,8 @@ type MatchCreator {
     timestamp: DateTime!
     games: [GameCreator!]
     video: String
-}
-type EventCreator {
-    name: String!
-    organizationId: Int!
-    matches: [MatchCreator!]
+    type: MatchType
+    rom: RomVersion
 }
 
 type Authenticator {
@@ -144,6 +149,8 @@ type Match {
     event: Event!
     timestamp: DateTime!
     video: String
+    type: MatchType
+    rom: RomVersion
     eloChanges: [EloSnapshot!]!
 }
 

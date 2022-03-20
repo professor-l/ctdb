@@ -3,7 +3,7 @@ import { GraphQLContext } from "../context";
 const getPlayer = async (
   parent: unknown,
   args: { name?: string, id?: number, },
-  context: GraphQLContext,
+  context: GraphQLContext
 ) => {
   
   /* 

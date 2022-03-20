@@ -56,6 +56,8 @@ model Event {
   
   matches       Match[]
   participants  Player[]
+
+  @@unique([name, edition])
 }
 
 // Base User model
@@ -92,6 +94,7 @@ model Result {
   game        Game @relation(fields: [gameId], references: [id])
   gameId      Int
 
+  styles      Playstyle[]
   rank        Int
   score       Int?
 

@@ -1,4 +1,5 @@
-import { GraphQLContext, Playstyle } from "../context";
+import { GraphQLContext } from "../context";
+import { Playstyle } from "../types";
 
 const createPlayer = async (
   parent: unknown,
