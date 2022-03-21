@@ -46,8 +46,6 @@ export type MatchCreator = {
   rom?: RomVersion,
 }
 
-import { Prisma } from "@prisma/client";
-
 // data prepared for the prisma API
 
 export type ConnectData = {

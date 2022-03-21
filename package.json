@@ -7,6 +7,9 @@
     "dev": "ts-node-dev --exit-child src/index.ts",
     "start": "ts-node src/index.ts"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

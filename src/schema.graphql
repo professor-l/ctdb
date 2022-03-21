@@ -28,7 +28,8 @@ enum MatchType {
 type Query {
     info: String!
     getOrganization(name: String, id: Int): Organization
-    getEvent(name: String!): Event
+    getEvent(id: Int): Event
+    getEventsByName(name: String, edition: String): [Event]
     # getUser(username: String!): User
     getPlayer(name: String, id: Int): Player
 
@@ -54,17 +55,17 @@ type Mutation {
 
     createResult(
         gameId: Int!
-        result: ResultCreator!
+        result: ResultCreatorInput!
     ): Result
 
     createGame(
         matchId: Int!
-        game: GameCreator!
+        game: GameCreatorInput!
     ): Game
 
     createMatch(
         eventId: Int!
-        match: MatchCreator!
+        match: MatchCreatorInput!
     ): Match
 }
 
@@ -73,13 +74,34 @@ type ResultCreator {
     rank: Int!
     score: Int
 }
+
+input ResultCreatorInput {
+    playerId: Int!
+    rank: Int!
+    score: Int
+}
+
 type GameCreator {
     timestamp: DateTime
     results: [ResultCreator!]
 }
+
+input GameCreatorInput {
+    timestamp: DateTime
+    results: [ResultCreatorInput!]
+}
+
 type MatchCreator {
     timestamp: DateTime!
     games: [GameCreator!]
+    video: String
+    type: MatchType
+    rom: RomVersion
+}
+
+input MatchCreatorInput {
+    timestamp: DateTime!
+    games: [GameCreatorInput!]
     video: String
     type: MatchType
     rom: RomVersion
