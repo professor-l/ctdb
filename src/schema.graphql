@@ -27,12 +27,20 @@ enum MatchType {
 
 type Query {
     info: String!
+
+    # Organizations
     getOrganization(name: String, id: Int): Organization
+    getAllOrganizations: [Organization!]!
+
+    # Events
     getEvent(id: Int): Event
     getEventsByName(name: String, edition: String): [Event]
+
+    # Matches
+
+    # Players
     # getUser(username: String!): User
     getPlayer(name: String, id: Int): Player
-
     # TODO: Privileged query
     getAllPlayers: [Player!]!
 }
@@ -49,6 +57,7 @@ type Mutation {
     createOrganization(
         name: String!
         description: String!
+        memberIds: [Int!]
     ): Organization
 
     # TODO: all these!
@@ -116,7 +125,7 @@ type Organization {
     id: Int!
     name: String!
     description: String!
-    members: [User!]!
+    members: [User]
     events: [Event!]!
 }
 

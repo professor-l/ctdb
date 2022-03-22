@@ -2,15 +2,36 @@
 // converting them to prisma-ready types (above)
 
 import {
+  PreparedOrganizationData,
   PreparedResultData,
   PreparedGameData,
   PreparedMatchData,
   ResultCreator,
   GameCreator,
-  MatchCreator
-} from "../types";
+  MatchCreator,
+  ConnectData,
+  OrganizationCreator,
+} from "../types"
 
 export const prepare = {
+  prepareOrganization: function({
+    name,
+    description,
+    memberIds = [],
+  }: OrganizationCreator): PreparedOrganizationData {
+    const mappedMemberIds : ConnectData[] = memberIds.map((id: number): ConnectData => {
+      return { id }
+    })
+
+    return  {
+      name,
+      description,
+      members: {
+        connect: mappedMemberIds,
+      }
+    }
+  },
+
   prepareResult: function(
     result: ResultCreator
   ): PreparedResultData {
@@ -21,7 +42,7 @@ export const prepare = {
       },
       rank: result.rank,
       score: result.score,
-    };
+    }
   },
 
   prepareGame: function(
@@ -30,18 +51,17 @@ export const prepare = {
   
     let d: PreparedGameData = {
       timestamp: game.timestamp,
-    };
+    }
   
     if (game.results) {
       d.results = {
         create: game.results.map(
           result => this.prepareResult(result)
         )
-      };
+      }
     }
   
-    return d;
-  
+    return d
   },
 
   prepareMatch: function(
@@ -59,11 +79,9 @@ export const prepare = {
         create: match.games.map(
           game => this.prepareGame(game)
         )
-      };
+      }
     }
 
-    return d;
-
+    return d
   }
-
-};
+}

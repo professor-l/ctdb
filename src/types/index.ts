@@ -27,6 +27,12 @@ export enum MatchType {
 // mapping of creator types
 // children always optional
 // parents mandatory in API
+export type OrganizationCreator = {
+  name: string,
+  description?: string,
+  memberIds?: number[],
+}
+
 export type ResultCreator = {
   playerId: number,
   rank: number,
@@ -46,10 +52,30 @@ export type MatchCreator = {
   rom?: RomVersion,
 }
 
+export type UserCreator = {
+  id: number,
+  username: string,
+  player: [PlayerCreator]
+}
+
+export type PlayerCreator = {
+  id: number,
+  name: string,
+  user: [UserCreator]
+  playstyles?: [Playstyle]
+  country?: string
+}
+
 // data prepared for the prisma API
 
 export type ConnectData = {
   id: number,
+}
+
+export type PreparedOrganizationData = {
+  name: string,
+  description?: string,
+  members?: { connect: ConnectData[] }
 }
 
 export type PreparedResultData = {
