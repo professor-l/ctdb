@@ -5,7 +5,7 @@ const getEventsByName = async (
   args: { name?: string, edition?: string },
   context: GraphQLContext
 ) => {
-  const operator = args.name && args.edition ? 'AND' : 'OR'
+  const operator = args.name && args.edition ? 'AND' : 'OR';
 
   return context.prisma.event.findMany({
     where: {

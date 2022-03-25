@@ -13,14 +13,14 @@ const createMatch = async (
   context: GraphQLContext
 ) => {
 
-  let d = prepare.prepareMatch(args.match);
+  const d = prepare.prepareMatch(args.match);
   d.event = { connect: { id: args.eventId } };
 
   return await context.prisma.match.create({
 
     // cast prepared data as Prisma provided type
     data: d as Prisma.MatchCreateInput,
-  })
+  });
 
 };
 

@@ -1,12 +1,12 @@
-import { GraphQLContext } from "../context"
+import { GraphQLContext } from "../context";
 
 
 const getAllOrganizations = async (
   parent: unknown,
-  args: {},
+  args: { }, // eslint-disable-line
   context: GraphQLContext
 ) => {
-  return context.prisma.organization.findMany()
+  return context.prisma.organization.findMany();
 };
 
-export default getAllOrganizations
+export default getAllOrganizations;

@@ -23,7 +23,7 @@ const resolvers = {
   // implemented seperately
   Query: query,
   Mutation: mutation,
-}
+};
 
 export const schema = makeExecutableSchema({
   typeDefs,

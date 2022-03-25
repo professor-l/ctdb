@@ -2,7 +2,7 @@ import { GraphQLContext } from "../context";
 
 const getAllPlayers = async (
   parent: unknown,
-  args: { },
+  _args: { }, // eslint-disable-line
   context: GraphQLContext
 ) => {
   return context.prisma.player.findMany();

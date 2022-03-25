@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
 // TODO: Add more seeds in here, maybe add randomization too
 // TODO: Abstractions possible with model attributes
@@ -20,7 +20,7 @@ async function main() {
         ],
       }
     },
-  })
+  });
 
   const playerJack = await prisma.player.upsert({
     where: { name: 'Jack' },
@@ -41,7 +41,7 @@ async function main() {
         }
       }
     },
-  })
+  });
 
   const playerJill = await prisma.player.upsert({
     where: { name: 'Jill' },
@@ -62,10 +62,10 @@ async function main() {
         }
       }
     },
-  })
+  });
 
   const testEvent = await prisma.event.upsert({
-    where: { 
+    where: {
       name_edition: {
         name: 'Test Event',
         edition: 'Season 1',
@@ -127,16 +127,16 @@ async function main() {
         ]
       }
     },
-  })
+  });
 
-  console.log({ organization, playerJack, playerJill, testEvent })
+  console.log({ organization, playerJack, playerJill, testEvent });
 }
 
 main()
   .catch((e) => {
-    console.error(e)
-    process.exit(1)
+    console.error(e);
+    process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });

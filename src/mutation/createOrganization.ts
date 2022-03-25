@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@prisma/client";
 
-import { GraphQLContext } from "../context"
+import { GraphQLContext } from "../context";
 import { prepare } from "./prepareCreator";
 
 const createOrganization = async (
@@ -12,11 +12,11 @@ const createOrganization = async (
   },
   context: GraphQLContext
 ) => {
-  const d = prepare.prepareOrganization(args)
+  const d = prepare.prepareOrganization(args);
 
   return await context.prisma.organization.create({
     data: d as Prisma.OrganizationCreateInput,
-  })
-}
+  });
+};
 
-export default createOrganization
+export default createOrganization;

@@ -13,7 +13,7 @@ const createGame = async (
   context: GraphQLContext
 ) => {
 
-  let d = prepare.prepareGame(args.game);
+  const d = prepare.prepareGame(args.game);
   d.match = { connect: { id: args.matchId } };
 
   return await context.prisma.game.create({

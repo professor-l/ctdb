@@ -13,7 +13,7 @@ const createResult = async (
   context: GraphQLContext
 ) => {
 
-  let d = prepare.prepareResult(args.result);
+  const d = prepare.prepareResult(args.result);
   d.game = { connect: { id: args.gameId } };
 
   return await context.prisma.result.create({
