@@ -38,21 +38,20 @@ enum MatchType {
 // Base organization model
 // CTM, CTL, CTG, CTWC are examples
 model Organization {
-  id          Int @id @default(autoincrement())
+  id          String @id @default(cuid())
   name        String @db.VarChar(64) @unique
   description String
-  members     User[]   // staff
   events      Event[]
 }
 
 // Base event model
 // CTM futures 2017, CTL season 3 division 6b, etc
 model Event {
-  id            Int @id @default(autoincrement())
+  id            String @id @default(cuid())
   name          String @db.VarChar(256)
   edition       String? @db.VarChar(64)
   organizer     Organization? @relation(fields: [organizerId], references: [id])
-  organizerId   Int?
+  organizerId   String?
   
   matches       Match[]
   participants  Player[]
@@ -60,23 +59,10 @@ model Event {
   @@unique([name, edition])
 }
 
-// Base User model
-model User {
-  id            Int @id @default(autoincrement())
-  username      String? @db.VarChar(64) @unique
-  hashed_pw     String?
-
-  player        Player?
-  organizations Organization[]
-  pronouns      Pronoun[]
-}
-
 // Base Player model
 model Player {
-  id          Int @id @default(autoincrement())
+  id          String @id @default(cuid())
   name        String? @db.VarChar(64) @unique
-  user        User? @relation(fields: [userId], references: [id])
-  userId      Int?
 
   playstyles  Playstyle[]
   country     String? @db.VarChar(2) // ISO 2 letter code
@@ -88,11 +74,11 @@ model Player {
 
 // A player's result in a game
 model Result {
-  id          Int @id @default(autoincrement())
+  id          String @id @default(cuid())
   player      Player @relation(fields: [playerId], references: [id])
-  playerId    Int
+  playerId    String
   game        Game @relation(fields: [gameId], references: [id])
-  gameId      Int
+  gameId      String
 
   styles      Playstyle[]
   rank        Int
@@ -104,18 +90,18 @@ model Result {
 
 // A game bewteen two or more players
 model Game {
-  id          Int @id @default(autoincrement())
+  id          String @id @default(cuid())
   results     Result[]
   match       Match @relation(fields: [matchId], references: [id])
-  matchId     Int
+  matchId     String
   timestamp   DateTime?
 }
 
 model Match {
-  id          Int @id @default(autoincrement())
+  id          String @id @default(cuid())
   games       Game[]
   event       Event @relation(fields: [eventId], references: [id])
-  eventId     Int
+  eventId     String
   type        MatchType @default(COMPETITIVE)
   rom         RomVersion @default(NTSC)
   eloChanges  EloSnapshot[]
@@ -126,13 +112,13 @@ model Match {
 }
 
 model EloSnapshot {
-  id          Int @id @default(autoincrement())
+  id          String @id @default(cuid())
   player      Player @relation(fields: [playerId], references: [id])
-  playerId    Int
+  playerId    String
   match       Match @relation(fields: [matchId], references: [id])
-  matchId     Int
+  matchId     String
   version     EloVersion @relation(fields: [versionId], references: [id])
-  versionId   Int
+  versionId   String
 
   index       Int // nth match for player
   victor      Boolean
@@ -143,7 +129,7 @@ model EloSnapshot {
 }
 
 model EloVersion {
-  id          Int @id @default(autoincrement())
+  id          String @id @default(cuid())
   version     String
   history     EloSnapshot[]
 }
