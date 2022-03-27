@@ -4,7 +4,7 @@ import { GraphQLContext } from "../context";
 const getOrganization = async (
   parent: unknown,
   args: {
-    id?: number,
+    id?: string,
     name?: string,
   },
   context: GraphQLContext

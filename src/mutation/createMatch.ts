@@ -7,7 +7,7 @@ import { prepare } from "./prepareCreator";
 const createMatch = async (
   parent: unknown,
   args: {
-    eventId: number,
+    eventId: string,
     match: MatchCreator,
   },
   context: GraphQLContext

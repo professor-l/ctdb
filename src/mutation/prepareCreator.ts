@@ -6,11 +6,13 @@ import {
   PreparedResultData,
   PreparedGameData,
   PreparedMatchData,
+  PreparedEventData,
   ResultCreator,
   GameCreator,
   MatchCreator,
   ConnectData,
   OrganizationCreator,
+  EventCreator,
 } from "../types";
 
 export const prepare = {
@@ -21,7 +23,7 @@ export const prepare = {
   }: OrganizationCreator): PreparedOrganizationData {
 
     const mappedMemberIds : ConnectData[] = memberIds.map(
-      (id: number): ConnectData => { return { id }; }
+      (id: string): ConnectData => { return { id }; }
     );
 
     return  {
@@ -39,7 +41,12 @@ export const prepare = {
 
     return {
       player: {
-        connect: { id: result.playerId },
+        connectOrCreate: {
+          where: { name: result.playerName },
+          create: {
+            name: result.playerName,
+          }
+        },
       },
       rank: result.rank,
       score: result.score,
@@ -80,6 +87,24 @@ export const prepare = {
         create: match.games.map(
           game => this.prepareGame(game)
         )
+      };
+    }
+
+    return d;
+  },
+
+  prepareEvent: function(
+    event: EventCreator
+  ): PreparedEventData {
+
+    const d: PreparedEventData = {
+      name: event.name,
+      edition: event.edition,
+    };
+
+    if (event.matches) {
+      d.matches = {
+        create: event.matches.map(m => this.prepareMatch(m))
       };
     }
 

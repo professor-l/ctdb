@@ -54,7 +54,6 @@ model Event {
   organizerId   String?
   
   matches       Match[]
-  participants  Player[]
 
   @@unique([name, edition])
 }
@@ -65,10 +64,10 @@ model Player {
   name        String? @db.VarChar(64) @unique
 
   playstyles  Playstyle[]
+  pronouns    Pronoun[]
   country     String? @db.VarChar(2) // ISO 2 letter code
 
   results     Result[]
-  events      Event[]
   eloHistory  EloSnapshot[]
 }
 

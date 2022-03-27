@@ -29,18 +29,17 @@ type Query {
     info: String!
 
     # Organizations
-    getOrganization(name: String, id: Int): Organization
+    getOrganization(name: String, id: String): Organization
     getAllOrganizations: [Organization!]!
 
     # Events
-    getEvent(id: Int): Event
+    getEvent(id: String): Event
     getEventsByName(name: String, edition: String): [Event]
 
     # Matches
 
     # Players
-    # getUser(username: String!): User
-    getPlayer(name: String, id: Int): Player
+    getPlayer(name: String, id: String): Player
     # TODO: Privileged query
     getAllPlayers: [Player!]!
 }
@@ -57,55 +56,41 @@ type Mutation {
     createOrganization(
         name: String!
         description: String!
-        memberIds: [Int!]
+        memberIds: [String!]
     ): Organization
 
     # TODO: all these!
 
     createResult(
-        gameId: Int!
+        gameId: String!
         result: ResultCreatorInput!
     ): Result
 
     createGame(
-        matchId: Int!
+        matchId: String!
         game: GameCreatorInput!
     ): Game
 
     createMatch(
-        eventId: Int!
+        eventId: String!
         match: MatchCreatorInput!
     ): Match
-}
 
-type ResultCreator {
-    playerId: Int!
-    rank: Int!
-    score: Int
+    createEvent(
+        organizationId: String
+        event: EventCreatorInput!
+    ): Event
 }
 
 input ResultCreatorInput {
-    playerId: Int!
+    playerName: String!
     rank: Int!
     score: Int
-}
-
-type GameCreator {
-    timestamp: DateTime
-    results: [ResultCreator!]
 }
 
 input GameCreatorInput {
     timestamp: DateTime
     results: [ResultCreatorInput!]
-}
-
-type MatchCreator {
-    timestamp: DateTime!
-    games: [GameCreator!]
-    video: String
-    type: MatchType
-    rom: RomVersion
 }
 
 input MatchCreatorInput {
@@ -116,21 +101,21 @@ input MatchCreatorInput {
     rom: RomVersion
 }
 
-type Authenticator {
-    token: String
-    user: User
+input EventCreatorInput {
+    name: String!
+    edition: String
+    matches: [MatchCreatorInput!]
 }
 
 type Organization {
-    id: Int!
+    id: String!
     name: String!
     description: String!
-    members: [User]
     events: [Event!]!
 }
 
 type Event {
-    id: Int!
+    id: String!
     name: String!
     edition: String!
     organization: Organization
@@ -138,18 +123,9 @@ type Event {
     participants: [Player!]!
 }
 
-type User {
-    id: Int!
-    username: String!
-    player: Player
-    organizations: [Organization!]
-    pronouns: [String!]
-}
-
 type Player {
-    id: Int!
+    id: String!
     name: String!
-    user: User
     playstyles: [Playstyle!]
     country: String
 
@@ -159,7 +135,7 @@ type Player {
 }
 
 type Result {
-    id: Int!
+    id: String!
     player: Player!
     game: Game!
 
@@ -168,14 +144,14 @@ type Result {
 }
 
 type Game {
-    id: Int!
+    id: String!
     results: [Result!]!
     match: Match!
     timestamp: DateTime
 }
 
 type Match {
-    id: Int!
+    id: String!
     games: [Game!]!
     event: Event!
     timestamp: DateTime!
@@ -186,7 +162,7 @@ type Match {
 }
 
 type EloSnapshot {
-    id: Int!
+    id: String!
     player: Player!
     match: Match!
     index: Int!

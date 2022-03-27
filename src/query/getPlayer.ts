@@ -2,7 +2,7 @@ import { GraphQLContext } from "../context";
 
 const getPlayer = async (
   parent: unknown,
-  args: { name?: string, id?: number, },
+  args: { name?: string, id?: string, },
   context: GraphQLContext
 ) => {
   

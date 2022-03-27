@@ -2,7 +2,7 @@ import { GraphQLContext } from "../context";
 
 const getEvent = async (
   parent: unknown,
-  args: { id: number, },
+  args: { id: string, },
   context: GraphQLContext
 ) => {
 

@@ -1,7 +1,6 @@
 import { MatchType, PrismaClient, RomVersion } from '@prisma/client';
 import { faker } from "@faker-js/faker";
 import sampleSize from "lodash/sampleSize";
-import includes from "lodash/includes";
 import { Playstyle } from '../src/types';
 
 const prisma = new PrismaClient();

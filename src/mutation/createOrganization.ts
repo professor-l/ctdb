@@ -8,7 +8,6 @@ const createOrganization = async (
   args: {
     name: string,
     description: string,
-    memberIds: number[],
   },
   context: GraphQLContext
 ) => {

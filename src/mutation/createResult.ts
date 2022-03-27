@@ -7,7 +7,7 @@ import { prepare } from "./prepareCreator";
 const createResult = async (
   parent: unknown,
   args: {
-    gameId: number,
+    gameId: string,
     result: ResultCreator,
   },
   context: GraphQLContext

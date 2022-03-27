@@ -30,11 +30,11 @@ export enum MatchType {
 export type OrganizationCreator = {
   name: string,
   description?: string,
-  memberIds?: number[],
+  memberIds?: string[],
 }
 
 export type ResultCreator = {
-  playerId: number,
+  playerName: string,
   rank: number,
   score?: number,
 }
@@ -52,24 +52,24 @@ export type MatchCreator = {
   rom?: RomVersion,
 }
 
-export type UserCreator = {
-  id: number,
-  username: string,
-  player: [PlayerCreator]
+export type EventCreator = {
+  name: string,
+  edition?: string,
+  matches: MatchCreator[],
 }
 
 export type PlayerCreator = {
-  id: number,
   name: string,
-  user: [UserCreator]
-  playstyles?: [Playstyle]
+  playstyles?: Playstyle[]
+  pronouns?: Pronoun[]
   country?: string
 }
 
 // data prepared for the prisma API
 
 export type ConnectData = {
-  id: number,
+  id?: string,
+  name?: string,
 }
 
 export type PreparedOrganizationData = {
@@ -79,7 +79,12 @@ export type PreparedOrganizationData = {
 }
 
 export type PreparedResultData = {
-  player: { connect: ConnectData },
+  player: {
+    connectOrCreate: {
+      where: ConnectData,
+      create: { name: string }
+    }
+  },
   game?: { connect: ConnectData },
   rank: number,
   score?: number,
@@ -105,5 +110,16 @@ export type PreparedMatchData = {
   rom?: RomVersion,
   timestamp: Date,
   video?: string,
+}
+
+export type PreparedEventData = {
+  name: string,
+  edition?: string,
+  organizer?: {
+    connect: ConnectData,
+  },
+  matches?: {
+    create: PreparedMatchData[],
+  },
 }
 
