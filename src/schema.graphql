@@ -120,18 +120,17 @@ type Event {
     edition: String!
     organization: Organization
     matches: [Match!]!
-    participants: [Player!]!
 }
 
 type Player {
     id: String!
     name: String!
     playstyles: [Playstyle!]
+    pronouns: [Pronoun!]
     country: String
 
     eloHistory: [EloSnapshot!]!
     results: [Result!]!
-    events: [Event!]!
 }
 
 type Result {
