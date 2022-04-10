@@ -36,6 +36,7 @@ export type OrganizationCreator = {
 export type ResultCreator = {
   playerName: string,
   rank: number,
+  playstyles: Playstyle[],
   score?: number,
 }
 
