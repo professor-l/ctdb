@@ -48,20 +48,19 @@ model Organization {
 // CTM futures 2017, CTL season 3 division 6b, etc
 model Event {
   id            String @id @default(cuid())
-  name          String @db.VarChar(256)
-  edition       String? @db.VarChar(64)
+  name          String @db.VarChar(256) @unique
+  edition       String? @db.VarChar(256)
   organizer     Organization? @relation(fields: [organizerId], references: [id])
   organizerId   String?
   
   matches       Match[]
-
-  @@unique([name, edition])
 }
 
 // Base Player model
 model Player {
   id          String @id @default(cuid())
-  name        String? @db.VarChar(64) @unique
+  eloName     String @db.VarChar(64) @unique
+  name        String? @db.VarChar(64)
 
   playstyles  Playstyle[]
   pronouns    Pronoun[]
