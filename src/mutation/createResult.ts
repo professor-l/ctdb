@@ -1,8 +1,6 @@
-import { Prisma } from "@prisma/client";
-
 import { GraphQLContext } from "../context";
+import Result from "../interface/Result";
 import { ResultCreator } from "../types";
-import { prepare } from "./prepareCreator";
 
 const createResult = async (
   parent: unknown,
@@ -13,14 +11,10 @@ const createResult = async (
   context: GraphQLContext
 ) => {
 
-  const d = prepare.prepareResult(args.result);
-  d.game = { connect: { id: args.gameId } };
+  const r = new Result(context);
 
-  return await context.prisma.result.create({
-
-    // cast prepared data as Prisma provided type
-    data: d as Prisma.ResultCreateInput,
-  });
+  await r.readFromGQLInput(args.result, args.gameId);
+  return r.writeToPrisma();
 
 };
 

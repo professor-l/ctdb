@@ -1,25 +1,22 @@
 import { GraphQLContext } from "../context";
-import { Playstyle } from "../types";
+import Player from "../interface/Player";
+import { Playstyle, Pronoun } from "../types";
 
 const createPlayer = async (
   parent: unknown,
-  args: { 
+  args: {
     eloName: string,
-    name: string,
+    name?: string,
     country?: string,
     playstyles?: Playstyle[],
+    pronouns?: Pronoun[],
   },
   context: GraphQLContext,
 ) => {
 
-  return await context.prisma.player.create({
-    data: {
-      eloName: args.eloName,
-      name: args.name,
-      country: args.country,
-      playstyles: args.playstyles,
-    }
-  });
+  const p = new Player(context);
+  p.readFromGQLInput(args);
+  return p.writeToPrisma();
 
 };
 

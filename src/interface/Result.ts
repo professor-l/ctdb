@@ -1,6 +1,8 @@
-import { Playstyle } from "@prisma/client";
-import { prisma } from "../context";
+import { Playstyle, Result as PrismaResult } from "@prisma/client";
+import { GraphQLContext } from "../context";
 import { ResultCreator } from "../types";
+import DataError from "./DataError";
+import Player from "./Player";
 
 // TODO: throw errors when stuff fails :D
 
@@ -13,60 +15,96 @@ export default class Result {
   // from an API call *or* a database query.
   data?: {
     id?: string,
-    playerId: string,
     gameId: string,
     styles?: Playstyle[]
     rank: number,
     score?: number,
+
+    playerId?: string,
   };
 
-  async readFromPrisma(id?: string) {
+  // child object(s)
+  player?: Player;
 
-    if (this.data && this.data.id)
-      id = this.data.id;
+  // whether to include foreign keys as children objects
+  // on db reads and whether to cascade on db writes
+  cascade: boolean;
 
-    const r = await prisma.result.findUnique({
-      where: { id },
-    });
+  context: GraphQLContext;
 
-    if (!r)
-      return;
+  constructor(context: GraphQLContext) {
+    this.context = context;
 
+    // no cascade by default
+    this.cascade = false;
+  }
+
+  readFromPrismaObject(r: PrismaResult) {
     this.data = {
-      id,
-      playerId: r.playerId,
+      id: r.id,
       gameId: r.gameId,
       styles: r.styles,
       rank: r.rank,
       score: r.score || undefined,
+
+      playerId: r.playerId,
     };
   }
 
-  async readFromGQLInput(r: ResultCreator, gid: string) {
+  async readFromPrisma(id?: string, includeChildren = true) {
+
+    this.cascade = includeChildren;
+
+    if (this.data && this.data.id)
+      id = this.data.id;
+
+    if (!id) {
+      throw new DataError("No id provided");
+    }
+
+    const r = await this.context.prisma.result.findUnique({
+      where: { id },
+    });
+
+    if (!r)
+      throw new DataError("Invalid id provided");
+
+    this.readFromPrismaObject(r);
+
+    // populate child object(s)
+    if (this.cascade) {
+      this.player = new Player(this.context);
+      this.player.readFromPrisma(this.data?.playerId);
+    }
+  }
+
+  async readFromGQLInput(r: ResultCreator, gameId: string) {
+
+    // GraphQL inputs will always want cascade
+    this.cascade = true;
+
+    this.player = new Player(this.context);
+    this.player.data = {
+      eloName: r.playerName,
+      playstyles: r.playstyles,
+    };
 
     this.data = {
-      gameId: gid,
+      gameId,
       rank: r.rank,
       score: r.score,
       styles: r.playstyles,
-      // TODO: replace with an upsert formulated as
-      // a findOrCreate and give it a proper Player
-      playerId: (
-        await prisma.player.findUnique({
-          where: { eloName: r.playerName }
-        })
-      )?.id || "",
     };
   }
 
   async writeToPrisma() {
     if (!this.data)
-      return;
+      throw new DataError("Data unpopulated");
 
-    // typically this is a great use case for the
-    // prisma API's "upsert" method, but because on
-    // paper 
-
+    if (this.cascade) {
+      this.player?.writeToPrisma();
+      this.data.playerId = this.player?.data?.id;
+    }
     const data = {
       player: {
         connect: { id: this.data.playerId },
@@ -79,11 +117,13 @@ export default class Result {
       score: this.data.score,
     };
 
-    prisma.result.upsert({
+    const r = await this.context.prisma.result.upsert({
       where: { id: this.data.id },
       update: data,
       create: data,
     });
+
+    this.readFromPrismaObject(r);
   }
 
 }
