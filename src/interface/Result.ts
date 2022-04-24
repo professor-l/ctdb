@@ -53,7 +53,7 @@ export default class Result {
       // a findOrCreate and give it a proper Player
       playerId: (
         await prisma.player.findUnique({
-          where: { name: r.playerName }
+          where: { eloName: r.playerName }
         })
       )?.id || "",
     };

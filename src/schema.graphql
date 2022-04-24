@@ -48,7 +48,8 @@ type Query {
 type Mutation {
 
     createPlayer(
-        name: String!,
+        eloName: String!,
+        name: String,
         playstyles: [Playstyle!],
         country: String,
     ): Player
@@ -125,7 +126,8 @@ type Event {
 
 type Player {
     id: String!
-    name: String!
+    eloName: String!
+    name: String
     playstyles: [Playstyle!]
     pronouns: [Pronoun!]
     country: String

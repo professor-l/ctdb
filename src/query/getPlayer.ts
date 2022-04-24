@@ -2,7 +2,7 @@ import { GraphQLContext } from "../context";
 
 const getPlayer = async (
   parent: unknown,
-  args: { name?: string, id?: string, },
+  args: { eloName?: string, id?: string, },
   context: GraphQLContext
 ) => {
   
@@ -20,8 +20,8 @@ const getPlayer = async (
 
   return context.prisma.player.findUnique({
     where: {
-      name: args.name,
-      id: args.name ? undefined : args.id,
+      eloName: args.eloName,
+      id: args.eloName ? undefined : args.id,
     }
   });
 

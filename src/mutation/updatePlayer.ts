@@ -15,7 +15,7 @@ const updatePlayer = async (
 
   return await context.prisma.player.update({
     where: {
-      name: args.playerName,
+      eloName: args.playerName,
     },
     data: {
       name: args.newName,

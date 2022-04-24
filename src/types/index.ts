@@ -60,7 +60,8 @@ export type EventCreator = {
 }
 
 export type PlayerCreator = {
-  name: string,
+  eloName: string,
+  name?: string,
   playstyles?: Playstyle[]
   pronouns?: Pronoun[]
   country?: string

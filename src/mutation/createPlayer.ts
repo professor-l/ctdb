@@ -4,6 +4,7 @@ import { Playstyle } from "../types";
 const createPlayer = async (
   parent: unknown,
   args: { 
+    eloName: string,
     name: string,
     country?: string,
     playstyles?: Playstyle[],
@@ -13,6 +14,7 @@ const createPlayer = async (
 
   return await context.prisma.player.create({
     data: {
+      eloName: args.eloName,
       name: args.name,
       country: args.country,
       playstyles: args.playstyles,

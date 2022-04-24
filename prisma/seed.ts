@@ -48,10 +48,12 @@ function randomGames(playerId1: string, playerId2: string) {
   // first to?
   const n = sampleSize([3, 5, 7])[0];
   for (let i = 0; i < n; ++i) {
+    const results = randomResults(playerId1, playerId2)
+
     games.push({
       timestamp: new Date(),
       results: {
-        create: randomResults(playerId1, playerId2),
+        create: results,
       }
     });
   }
@@ -77,12 +79,15 @@ async function main() {
   const playerIds: string[] = [];
 
   for (let i = 0; i < playerCount; ++i) {
-    const name = faker.fake("{{name.firstName}} {{name.lastName}}");
+    const firstName = faker.name.firstName();
+    const lastName = faker.name.lastName();
+    const eloName = faker.internet.userName(firstName, lastName);
     const player = await prisma.player.upsert({
-      where: { name },
+      where: { eloName },
       update: { },
       create: {
-        name,
+        eloName: `${eloName}${i}`,
+        name: `${firstName} ${lastName}`,
         playstyles: sampleSize(Playstyle),
         country: faker.address.countryCode(),
       }
@@ -106,8 +111,10 @@ async function main() {
     },
   });
 
-  const testEvent = await prisma.event.create({
-    data: {
+  const testEvent = await prisma.event.upsert({
+    where: { name: "Test Event" },
+    update: {},
+    create: {
       name: "Test Event",
       edition: "Season 1",
       organizer: {
