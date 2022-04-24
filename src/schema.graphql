@@ -48,10 +48,18 @@ type Query {
 type Mutation {
 
     createPlayer(
-        eloName: String!,
-        name: String,
-        playstyles: [Playstyle!],
-        country: String,
+        eloName: String!
+        name: String
+        playstyles: [Playstyle!]
+        country: String
+    ): Player
+
+    updatePlayer(
+        playerName: String!,
+        newName: String,
+        newCountry: String,
+        newPronouns: [Pronoun],
+        newPlaystyles: [Playstyle]
     ): Player
 
     createOrganization(
@@ -86,7 +94,7 @@ type Mutation {
 input ResultCreatorInput {
     playerName: String!
     rank: Int!
-    playstyles: Playstyle[]
+    playstyles: [Playstyle]
     score: Int
 }
 

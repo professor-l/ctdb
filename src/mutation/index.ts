@@ -1,5 +1,5 @@
 import createPlayer from "./createPlayer";
-import createOragnization from "./createOrganization";
+import createOrganization from "./createOrganization";
 import createResult from "./createResult";
 import createGame from "./createGame";
 import createMatch from "./createMatch";
@@ -9,7 +9,7 @@ import updatePlayer from "./updatePlayer";
 
 const mutation = {
   createPlayer,
-  createOragnization,
+  createOrganization,
   createResult,
   createGame,
   createMatch,
