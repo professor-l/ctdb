@@ -17,7 +17,11 @@ const getAllMatches = async (
         }
       },
       event: true,
-    }
+    },
+    orderBy: {
+      timestamp: 'desc',
+    },
+    take: 1000,
   });
 };
 

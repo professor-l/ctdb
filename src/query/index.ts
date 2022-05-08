@@ -3,6 +3,7 @@
 import getPlayer from "./getPlayer";
 import getAllPlayers from "./getAllPlayers";
 import getAllMatches from "./getAllMatches";
+import getMatchesByPlayer from "./getMatchesByPlayer";
 import getOrganization from "./getOrganization";
 import getEvent from "./getEvent";
 import getEventsByName from "./getEventsByName";
@@ -13,6 +14,7 @@ const query = {
   getPlayer: getPlayer,
   getAllPlayers: getAllPlayers,
   getAllMatches: getAllMatches,
+  getMatchesByPlayer: getMatchesByPlayer,
   getOrganization: getOrganization,
   getAllOrganizations: getAllOrganizations,
   getEvent: getEvent,

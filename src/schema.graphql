@@ -38,6 +38,7 @@ type Query {
 
     # Matches
     getAllMatches: [Match!]!
+    getMatchesByPlayer(eloName: String): [Match!]!
 
     # Players
     getPlayer(name: String, id: String): Player
