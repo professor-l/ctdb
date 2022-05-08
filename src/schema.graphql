@@ -37,6 +37,7 @@ type Query {
     getEventsByName(name: String, edition: String): [Event]
 
     # Matches
+    getAllMatches: [Match!]!
 
     # Players
     getPlayer(name: String, id: String): Player

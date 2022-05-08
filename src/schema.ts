@@ -6,7 +6,7 @@ import {
   Pronoun,
   Playstyle,
   RomVersion,
-  MatchType
+  MatchType,
 } from "./types";
 import typeDefs from "./schema.graphql";
 import query from "./query";
