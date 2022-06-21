@@ -1,0 +1,63 @@
+type Organization {
+    id: String!
+    name: String!
+    description: String!
+    events: [Event!]!
+}
+
+type Event {
+    id: String!
+    name: String!
+    edition: String!
+    organization: Organization
+    matches: [Match!]!
+}
+
+type Player {
+    id: String!
+    eloName: String!
+    name: String
+    playstyles: [Playstyle!]
+    pronouns: [Pronoun!]
+    country: String
+
+    eloHistory: [EloSnapshot!]!
+    results: [Result!]!
+}
+
+type Result {
+    id: String!
+    player: Player!
+    game: Game!
+
+    rank: Int!
+    score: Int
+}
+
+type Game {
+    id: String!
+    results: [Result!]!
+    match: Match!
+    timestamp: DateTime
+}
+
+type Match {
+    id: String!
+    games: [Game!]!
+    event: Event!
+    timestamp: DateTime!
+    video: String
+    type: MatchType
+    rom: RomVersion
+    eloChanges: [EloSnapshot!]!
+}
+
+type EloSnapshot {
+    id: String!
+    player: Player!
+    match: Match!
+    index: Int!
+    version: String!
+    victor: Boolean!
+    newElo: Float!
+}

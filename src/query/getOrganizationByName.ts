@@ -1,11 +1,10 @@
 import { GraphQLContext } from "../context";
 
 
-const getOrganization = async (
+const getOrganizationByName = async (
   parent: unknown,
   args: {
-    id?: string,
-    name?: string,
+    name: string,
   },
   context: GraphQLContext
 ) => {
@@ -13,10 +12,9 @@ const getOrganization = async (
   return context.prisma.organization.findUnique({
     where: {
       name: args.name,
-      id: args.name ? undefined : args.id,
     }
   });
   
 };
 
-export default getOrganization;
+export default getOrganizationByName;

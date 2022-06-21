@@ -1,24 +1,36 @@
 // Allocator for the query resolvers
 
-import getPlayer from "./getPlayer";
-import getAllPlayers from "./getAllPlayers";
+import getOrganizationByName from "./getOrganizationByName";
+import getOrganizationById from "./getOrganizationById";
+import getAllOrganizations from "./getAllOrganizations";
+
+import getEventById from "./getEventById";
+import getEventByName from "./getEventByName";
+import getEventsByEdition from "./getEventsByEdition";
+
 import getAllMatches from "./getAllMatches";
 import getMatchesByPlayer from "./getMatchesByPlayer";
-import getOrganization from "./getOrganization";
-import getEvent from "./getEvent";
-import getEventsByName from "./getEventsByName";
-import getAllOrganizations from "./getAllOrganizations";
+
+import getPlayerByName from "./getPlayerByName";
+import getPlayerById from "./getPlayerById";
+import getAllPlayers from "./getAllPlayers";
 
 const query = {
   info: () => "GraphQL API for CTDB",
-  getPlayer: getPlayer,
-  getAllPlayers: getAllPlayers,
-  getAllMatches: getAllMatches,
-  getMatchesByPlayer: getMatchesByPlayer,
-  getOrganization: getOrganization,
-  getAllOrganizations: getAllOrganizations,
-  getEvent: getEvent,
-  getEventsByName: getEventsByName,
+  getOrganizationByName,
+  getOrganizationById,
+  getAllOrganizations,
+
+  getEventById,
+  getEventByName,
+  getEventsByEdition,
+
+  getAllMatches,
+  getMatchesByPlayer,
+
+  getPlayerByName,
+  getPlayerById,
+  getAllPlayers,
 };
 
 export default query;

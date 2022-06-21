@@ -1,28 +1,24 @@
-import { Prisma } from "@prisma/client";
-
 import { GraphQLContext } from "../context";
-import { EventCreator } from "../types";
-import { prepare } from "./prepareCreator";
 
 const createEvent = async (
   parent: unknown,
   args: {
-    organizationName?: string,
-    event: EventCreator,
+    payload: {
+      name: string,
+      edition?: string,
+      organizerId?: string,
+      start?: Date,
+      end?: Date,
+    }
   },
   context: GraphQLContext
 ) => {
 
-  const d = prepare.prepareEvent(args.event);
-
-  if (args.organizationName)
-    d.organizer = { connect: { name: args.organizationName } };
-
-  return await context.prisma.event.create({
-
-    // cast prepared data as Prisma provided type
-    data: d as Prisma.EventCreateInput,
+  const e = context.prisma.event.create({
+    data: args.payload
   });
+
+  return e;
 };
 
 export default createEvent;

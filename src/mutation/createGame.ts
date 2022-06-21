@@ -1,26 +1,21 @@
-import { Prisma } from "@prisma/client";
-
 import { GraphQLContext } from "../context";
-import { GameCreator } from "../types";
-import { prepare } from "./prepareCreator";
 
 const createGame = async (
   parent: unknown,
   args: {
-    matchId: string,
-    game: GameCreator,
+    payload: {
+      matchId: string,
+      timestamp?: Date,
+    },
   },
   context: GraphQLContext
 ) => {
 
-  const d = prepare.prepareGame(args.game);
-  d.match = { connect: { id: args.matchId } };
-
-  return await context.prisma.game.create({
-
-    // cast prepared data as Prisma provided type
-    data: d as Prisma.GameCreateInput,
+  const g = await context.prisma.game.create({
+    data: args.payload,
   });
+
+  return g;
 
 };
 

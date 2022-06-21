@@ -1,16 +1,17 @@
 import { GraphQLContext } from "../context";
 
-const getEvent = async (
+const getPlayerById = async (
   parent: unknown,
   args: { id: string, },
   context: GraphQLContext
 ) => {
 
-  return context.prisma.event.findUnique({
+  return context.prisma.player.findUnique({
     where: {
       id: args.id,
     }
   });
+
 };
 
-export default getEvent;
+export default getPlayerById;

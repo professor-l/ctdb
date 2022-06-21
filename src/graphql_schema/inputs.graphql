@@ -1,0 +1,74 @@
+input CreatePlayerInput {
+    eloName: String!
+    playstyles: [Playstyle!]
+}
+
+input CreatePlayerCompleteInput {
+    eloName: String!
+    name: String,
+    playstyles: [Playstyle!],
+    pronouns: [Pronoun!]
+    country: String,
+}
+
+input UpdatePlayerNameInput {
+    oldEloName: String!
+    newEloName: String!
+}
+
+input UpdatePlaystyleInput {
+    eloName: String!
+    playstyles: [Playstyle!]!
+}
+
+input CreateOrganizationInput {
+    name: String!
+    description: String!
+}
+
+input CreateEventInput {
+    name: String!
+    edition: String
+    organizerId: String
+    start: DateTime
+    end: DateTime
+}
+
+input CreateMatchByEventNameInput {
+    eventName: String!
+
+    timestamp: DateTime!
+    video: String
+    type: MatchType
+    rom: RomVersion
+}
+
+input CreateMatchByEventIdInput {
+    eventId: String!
+
+    timestamp: DateTime!
+    video: String
+    type: MatchType
+    rom: RomVersion
+}
+
+input CreateGameInput {
+    matchId: String!
+    timestamp: DateTime
+}
+
+input CreateResultByPlayerNameInput {
+    gameId: String!
+    playerName: String!
+    rank: Int!
+    playstyles: [Playstyle]
+    score: Int
+}
+
+input CreateResultByPlayerIdInput {
+    gameId: String!
+    playerId: String!
+    rank: Int!
+    playstyles: [Playstyle]
+    score: Int
+}

@@ -1,21 +1,35 @@
 import createPlayer from "./createPlayer";
-import createOrganization from "./createOrganization";
-import createResult from "./createResult";
-import createGame from "./createGame";
-import createMatch from "./createMatch";
-import createEvent from "./createEvent";
 
-import updatePlayer from "./updatePlayer";
+import updatePlayerName from "./updatePlayerName";
+import addPlaystyle from "./addPlaystyle";
+import removePlaystyle from "./removePlaystyle";
+
+import createPlayerComplete from "./createPlayerComplete";
+
+import createOrganization from "./createOrganization";
+import createEvent from "./createEvent";
+import createMatchByEventName from "./createMatchByEventName";
+import createMatchByEventId from "./createMatchByEventId";
+import createGame from "./createGame";
+import createResultByPlayerId from "./createResultByPlayerId";
+import createResultByPlayerName from "./createResultByPlayerName";
+
 
 const mutation = {
   createPlayer,
-  createOrganization,
-  createResult,
-  createGame,
-  createMatch,
-  createEvent,
+  updatePlayerName,
+  addPlaystyle,
+  removePlaystyle,
 
-  updatePlayer,
+  createPlayerComplete,
+
+  createOrganization,
+  createEvent,
+  createMatchByEventName,
+  createMatchByEventId,
+  createGame,
+  createResultByPlayerId,
+  createResultByPlayerName,
 };
 
 export default mutation;

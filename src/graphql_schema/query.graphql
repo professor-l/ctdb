@@ -1,0 +1,23 @@
+type Query {
+    info: String!
+
+    # Organizations
+    getOrganizationByName(name: String!): Organization
+    getOrganizationById(id: String!): Organization
+    getAllOrganizations: [Organization!]!
+
+    # Events
+    getEventById(id: String): Event
+    getEventByName(name: String): [Event]
+    getEventsByEdition(edition: String): [Event]
+
+    # Matches
+    getAllMatches: [Match!]!
+    getMatchesByPlayer(eloName: String): [Match!]!
+
+    # Players
+    getPlayerByName(name: String!): Player
+    getPlayerById(id: String!): Player
+    # TODO: Privileged query
+    getAllPlayers: [Player!]!
+}

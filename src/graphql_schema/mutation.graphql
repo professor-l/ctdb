@@ -1,0 +1,37 @@
+type Mutation {
+
+    createPlayer(info: CreatePlayerInput): Player
+
+    updatePlayerName(payload: UpdatePlayerNameInput): Player
+    addPlaystyle(payload: UpdatePlaystyleInput): Player
+    removePlaystyle(payload: UpdatePlaystyleInput): Player
+
+    # Privileged queries
+    createPlayerComplete(payload: CreatePlayerCompleteInput): Player
+
+    createOrganization(
+        payload: CreateOrganizationInput
+    ): Organization
+
+    createEvent(payload: CreateEventInput): Event
+
+    createMatchByEventName(
+        payload: CreateMatchByEventNameInput
+    ): Match
+
+    createMatchByEventId(
+        payload: CreateMatchByEventIdInput
+    ): Match
+
+    createGame(
+        payload: CreateGameInput
+    ): Game
+
+    createResultByPlayerName(
+        payload: CreateResultByPlayerNameInput
+    ): Result
+
+    createResultByPlayerId(
+        payload: CreateResultByPlayerIdInput
+    ): Result
+}

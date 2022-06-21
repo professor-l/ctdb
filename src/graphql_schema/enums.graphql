@@ -1,0 +1,26 @@
+enum Pronoun {
+    HE
+    SHE
+    THEY
+}
+
+enum Playstyle {
+    DAS
+    TAP
+    ROLL
+}
+
+enum RomVersion {
+    NTSC
+    PAL
+    NTSC_CUSTOM
+    PAL_CUSTOM
+}
+
+enum MatchType {
+    FRIENDLY
+    COMPETITIVE
+    CHAMPIONSHIP
+}
+
+scalar DateTime

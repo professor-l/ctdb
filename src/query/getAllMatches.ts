@@ -19,7 +19,7 @@ const getAllMatches = async (
       event: true,
     },
     orderBy: {
-      timestamp: 'desc',
+      timestamp: "desc",
     },
     take: 1000,
   });

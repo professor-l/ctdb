@@ -8,7 +8,7 @@ import {
   RomVersion,
   MatchType,
 } from "./types";
-import typeDefs from "./schema.graphql";
+import typeDefs from "./graphql_schema";
 import query from "./query";
 import mutation from "./mutation";
 
