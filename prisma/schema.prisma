@@ -137,6 +137,6 @@ model EloSnapshot {
 
 model EloVersion {
   id          String @id @default(cuid())
-  version     String
+  version     String @unique
   history     EloSnapshot[]
 }

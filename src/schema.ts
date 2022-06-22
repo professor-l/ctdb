@@ -8,9 +8,20 @@ import {
   RomVersion,
   MatchType,
 } from "./types";
+
+import {
+  EloSnapshot,
+  Event,
+  Game,
+  Match,
+  Organization,
+  Player,
+  Result,
+} from "./resolvers";
+
 import typeDefs from "./graphql_schema";
-import query from "./query";
-import mutation from "./mutation";
+import Query from "./query";
+import Mutation from "./mutation";
 
 const resolvers = {
 
@@ -20,9 +31,18 @@ const resolvers = {
   RomVersion,
   MatchType,
 
+  // type resolvers
+  EloSnapshot,
+  Event,
+  Game,
+  Match,
+  Organization,
+  Player,
+  Result,
+
   // implemented seperately
-  Query: query,
-  Mutation: mutation,
+  Query,
+  Mutation,
 };
 
 export const schema = makeExecutableSchema({
