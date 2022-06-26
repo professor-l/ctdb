@@ -19,9 +19,9 @@ const player = {
     parent: Player,
     context: GraphQLContext
   ) => {
-    return context.prisma.result.findMany({
-      where: { playerId: parent.id },
-    });
+    return context.prisma.player.findUnique({
+      where: { id: parent.id },
+    }).results();
   },
 
 };

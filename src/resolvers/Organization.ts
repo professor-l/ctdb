@@ -7,9 +7,9 @@ const org = {
     parent: Organization,
     context: GraphQLContext
   ) => {
-    return context.prisma.event.findMany({
-      where: { organizerId: parent.id },
-    });
+    return context.prisma.organization.findUnique({
+      where: { id: parent.id },
+    }).events();
   },
   
 };

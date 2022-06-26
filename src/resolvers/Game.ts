@@ -7,9 +7,9 @@ const game = {
     parent: Game,
     context: GraphQLContext
   ) => {
-    return context.prisma.result.findMany({
-      where: { gameId: parent.id },
-    });
+    return context.prisma.game.findUnique({
+      where: { id: parent.id },
+    }).results();
   },
 
   match: async (

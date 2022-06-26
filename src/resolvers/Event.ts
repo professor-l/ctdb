@@ -16,9 +16,9 @@ const event = {
     parent: Event,
     context: GraphQLContext
   ) => {
-    return context.prisma.match.findMany({
-      where: { eventId: parent.id },
-    });
+    return context.prisma.event.findUnique({
+      where: { id: parent.id },
+    }).matches();
   }
 
 };
