@@ -48,7 +48,7 @@ function randomGames(playerId1: string, playerId2: string) {
   // first to?
   const n = sampleSize([3, 5, 7])[0];
   for (let i = 0; i < n; ++i) {
-    const results = randomResults(playerId1, playerId2)
+    const results = randomResults(playerId1, playerId2);
 
     games.push({
       timestamp: new Date(),

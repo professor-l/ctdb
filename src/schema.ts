@@ -1,8 +1,8 @@
-import { 
+import {
   makeExecutableSchema
 } from "@graphql-tools/schema";
 
-import { 
+import {
   Pronoun,
   Playstyle,
   RomVersion,

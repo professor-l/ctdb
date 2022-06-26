@@ -61,16 +61,17 @@ model Event {
 
 // Base Player model
 model Player {
-  id          String @id @default(cuid())
-  eloName     String @db.VarChar(64) @unique
-  name        String? @db.VarChar(64)
+  id            String @id @default(cuid())
+  eloName       String @db.VarChar(64) @unique
+  name          String? @db.VarChar(64)
 
-  playstyles  Playstyle[]
-  pronouns    Pronoun[]
-  country     String? @db.VarChar(2) // ISO 2 letter code
+  playstyles    Playstyle[]
+  pronouns      Pronoun[]
+  country       String? @db.VarChar(2) // ISO 2 letter code
 
-  results     Result[]
-  eloHistory  EloSnapshot[]
+  results       Result[]
+  eloHistory    EloSnapshot[]
+  computedStats ComputedElo[]
 }
 
 // A player's result in a game
@@ -136,7 +137,34 @@ model EloSnapshot {
 }
 
 model EloVersion {
-  id          String @id @default(cuid())
-  version     String @unique
-  history     EloSnapshot[]
+  id              String @id @default(cuid())
+  version         String @unique
+  history         EloSnapshot[]
+  computedValues  ComputedElo[]
+}
+
+
+
+// COMPUTED VALUES TABLE
+// table of Elo-related values nontrivially determined
+// computed values table is updated periodically
+model ComputedElo {
+  player      Player @relation(fields: [playerId], references: [id])
+  playerId    String
+  version     EloVersion @relation(fields: [versionId], references: [id])
+  versionId   String
+
+  // this is the ONLY computed value in the table that
+  // can be updated after a match that the corresponding
+  // player did *not* participate in, so the parse/update
+  // function is separate.
+  rank        Int
+
+  elo         Float
+  winCount    Int
+  lossCount   Int
+  highestElo  Float
+  lastMatch   DateTime
+
+  @@id([playerId, versionId])
 }
