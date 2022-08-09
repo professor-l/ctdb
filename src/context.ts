@@ -4,13 +4,13 @@ export const prisma = new PrismaClient();
 
 export type GraphQLContext = {
   prisma: PrismaClient;
-  eloVersionId?: string;
+  eloVersionId: string;
 }
 
 export async function contextFactory(): Promise<GraphQLContext> {
   
   // current Elo version
-  // TODO: hard-coding this is an MVP solution
+  // TODO: this shouldn't be inline; hard-coding it is MVP-only
   const versionString = "1.0";
 
   // get (or create) current elo version in db
