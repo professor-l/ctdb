@@ -1,14 +1,3 @@
-// Calculating Elo can be done either directly against
-// database data *or* on in-memory data before a massive
-// write to the database. Therefore, each of the utility
-// functions must be able to run either on database data
-// *or* in-memory object data. The types for those objects
-// are provided here.
-
-// NOTE: rank is a separate one-time calculation after all
-// other computations have occured, and is thus excluded
-// from these types.
-
 import { 
   Match as MatchP,
   MatchType,
@@ -32,7 +21,7 @@ export type Match = {
   // 0 or 1 depending on player
   winners:   number[];
   // losing score for each game
-  scores?:   number[];
+  scores:   number[];
   player0Id: string;
   player1Id: string;
 };
@@ -52,9 +41,4 @@ export type MatchWrapper = {
   timestamp?:   Date;
   submatches:   Match[];
   prismaObject: MatchP;
-}
-
-export type Pb = {
-  playerId: string;
-  score:    number; // int
 }
