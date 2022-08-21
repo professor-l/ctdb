@@ -2,8 +2,8 @@
 
 First, install dependencies:
 
-- PostgreSQL 13
-- Node.js LTS or later and the accompanying npm version
+- PostgreSQL 13 (don't forget to also enable the service in systemd or )
+- Node.js LTS and the accompanying npm version
 
 Enter the postgres shell:
 
@@ -25,7 +25,8 @@ In a normal shell once more, we can run setup:
 ```bash
 git clone git@github.com:professor-l/ctdb.git
 cd ctdb
-echo 'DATABASE_URL="postgresql://username:password@localhost:5432/dbname"' > .env
+echo 'DATABASE_URL="postgres://username:password@localhost:5432/dbname"' > .env
+npm install
 npx prisma migrate dev
 ```
 
