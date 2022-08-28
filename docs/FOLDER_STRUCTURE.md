@@ -124,7 +124,58 @@ You're already here! These are just text files to explain how CTDB works, nothin
 
 ## prisma
 
-Coming soon!
+This directory contains the code that controls the [Prisma database](https://www.prisma.io/).
+
+### migrations
+
+So I imagine this entire folder looks terrifying. The good thing is that you probably don't need to ever read it!
+
+Just like how the `package-lock.json` keeps a history of the packages used throughout the project, the migrations keep a history of the *database structure*. Migrations are also what let us enhance the database structure without needing to re-enter the data all over.
+
+Of course, the database will likely have been finished for some time, so all you need to do is look at the `schema.primsa` file to see its current structure.
+
+The `migration-lock.toml` file contains the current database provider (we use `postgresql` but `mysql` and `sqlite` are other options). This is tracked if it's ever switched during development.
+
+All of the other folders contain raw SQL (think of it as a lower level language that Prisma automatically genereates) that perform the actions we want. The names begin with a timestamp of when the migration occurred, followed by a brief description.
+
+[Here's](https://www.prisma.io/docs/concepts/components/prisma-migrate) an overview of how it interacts with your data.
+
+### schema.prisma
+
+The *schema* is what contains our current database configuration, from its structure to how to set it up. It's written with the [Prisma Schema Language](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference), which is designed to be readable with minimal bloat. Let's take a look at how our schema is structured.
+
+Its first entry identifies the `datasource`, which is the specific database we're using. In practice, we don't need to interact with it, as it's Prisma's job to take our commands and translate them into lower-level database queries.
+
+The next entry is the `generator`, which determines how Prisma parses database queries. `prisma-client-js` is its default, but there are also several [community-made generators](https://www.prisma.io/docs/concepts/components/prisma-schema/generators#community-generators) available.
+
+The remainder of the file contains the *data models*, which specifies exactly what's included in the database. Prisma organizes data into *objects* (the "O" in ORM). Here's what the `event` model looks like:
+
+```javascript
+model Event {
+	id            String @id @default(cuid())
+	name          String @db.VarChar(256) @unique
+	edition       String? @db.VarChar(256)
+	organizer     Organization? @relation(fields: [organizerId], references: [id])
+
+	organizerId   String?
+	start         DateTime?
+	end           DateTime?
+
+	matches       Match[]
+}
+```
+
+Each row defines a *field* that belongs to the object. It starts with the field's name (self explanatory), followed by the data type used to represent it. We see most fields are stored as plain text (as `String`s), but we can use more appropriate data types in certain cases (e.g. we could use a string to store the `start` and `end` times of the event, but it's more appropriate to use the `DateTime` data type), or we can even use other models defined in the schema (as with `organizer` and `matches`).
+
+You'll notice some rows contain a `?` next to the data type. This specifies the field is *optional*.
+
+The additional parameters beginning with `@` symbols are *attributes*, used to specify additional information about the field. Let's look at the attributes next to `name`. `@unique` specifies that we don't want different events to have the same name, and `@db.VarChar(256)` says this name can be at most 256 characters long. You can check out different data types and attributes [here](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference).
+
+For an summary of why the database is structured in exactly this way, check out the `ARCHITECTURE.md` documents (to be added haha).
+
+### seed.ts
+
+Contains code that's used to quickly create a database of fake test data.
 
 ## src
 
