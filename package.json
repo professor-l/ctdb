@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "repl": "ts-node scripts/dev-repl.ts",
     "dev": "ts-node-dev --exit-child src/index.ts",
     "start": "ts-node src/index.ts"
   },
