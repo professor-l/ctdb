@@ -7,8 +7,43 @@ Currently, the project's folder structure looks like this:
 
 ```
 📁 docs
+ ├── SETUP_QUICK.md
+ └── ...
 📁 prisma
+ ├── 📁 migrations
+ │    ├── migration_lock.toml
+ │    ├── 📁 20220211020354_init
+ │    └── ...
+ ├── schema.prisma
+ └── seed.ts
 📁 src
+ ├── 📁 elo/util
+ │    ├── index.ts
+ │    └── index.ts
+ ├── 📁 graphql_schema
+ │    ├── index.ts
+ │    ├── enums.graphql
+ │    ├── inputs.graphql
+ │    ├── mutation.graphql
+ │    ├── query.graphql
+ │    └── types.graphql
+ ├── 📁 mutation
+ │    ├── index.ts
+ │    ├── createMatchByEventId.ts
+ │    └── ...
+ ├── 📁 query
+ │    ├── index.ts
+ │    ├── getMatchesByPlayer.ts
+ │    └── ...
+ ├── 📁 resolvers
+ │    ├── index.ts
+ │    ├── Match.ts
+ │    └── ...
+ ├── 📁 types
+ │    └── index.ts
+ ├── index.ts
+ ├── context.ts
+ └── schema.ts
 .env.example
 .eslintrc.json
 .gitignore
@@ -19,11 +54,11 @@ package.json
 tsconfig.json
 ```
 
-Here's a description of what each of these things does.
+It's definitely a lot to take in! I intend for this document to be used more as a reference, something you look at when you want answers for a specific file. With that being said, let's begin.
 
 ## Top Level
 
-Mostly consists of "boilerplate" code you'll see in several projects.
+Mostly consists of setup and configuration code you'll see in several projects. Probably not necessary for understanding how CTDB "works" as a whole, but is definitely useful if you're interested in how to set up such a project yourself.
 
 ### .env.example
 
@@ -33,7 +68,7 @@ A simple example is a *debug* variable. When trying to track down an error, it's
 
 A more advanced use case is customizing how you want the code to behave on your local computer versus the official product. For example, you'll typically want to test out new changes on personal test data rather than the official production data. Thus, you may want an environment variable to point to the dataset you're currently using.
 
-Since these files may contain secret information (e.g. passwords), we provide `.env.example` as a template for you to substitute your own variables in.
+Since these files may contain secret information (e.g. passwords), we provide `.env.example` as a template for you to substitute your own variables in. This is then copied into a `.env` file that only exists on your computer and is *never committed* (the consequences of sharing passwords or secrets go without saying).
 
 [Here's](https://www.prisma.io/docs/guides/development-environment/environment-variables/managing-env-files-and-setting-variables) an overview of some of the environment variables Prisma uses.
 
