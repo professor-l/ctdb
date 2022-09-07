@@ -38,8 +38,8 @@ enum MatchType {
 // Base organization model
 // CTM, CTL, CTG, CTWC are examples
 model Organization {
-  id          String @id @default(cuid())
-  name        String @db.VarChar(64) @unique
+  id          String  @id @default(cuid())
+  name        String  @unique @db.VarChar(64)
   description String
   events      Event[]
 }
@@ -47,31 +47,27 @@ model Organization {
 // Base event model
 // CTM futures 2017, CTL season 3 division 6b, etc
 model Event {
-  id            String @id @default(cuid())
-  name          String @db.VarChar(256) @unique
-  edition       String? @db.VarChar(256)
-  organizer     Organization? @relation(fields: [organizerId], references: [id])
-  organizerId   String?
-
-  start         DateTime?
-  end           DateTime?
-  
-  matches       Match[]
+  id          String        @id @default(cuid())
+  name        String        @unique @db.VarChar(256)
+  edition     String?       @db.VarChar(256)
+  organizerId String?
+  end         DateTime?
+  start       DateTime?
+  organizer   Organization? @relation(fields: [organizerId], references: [id])
+  matches     Match[]
 }
 
 // Base Player model
 model Player {
-  id            String @id @default(cuid())
-  eloName       String @db.VarChar(64) @unique
-  name          String? @db.VarChar(64)
-
+  id            String        @id @default(cuid())
+  name          String?       @db.VarChar(64)
+  country       String?       @db.VarChar(2)
   playstyles    Playstyle[]
   pronouns      Pronoun[]
-  country       String? @db.VarChar(2) // ISO 2 letter code
-
-  results       Result[]
-  eloHistory    EloSnapshot[]
+  eloName       String        @unique @db.VarChar(64)
   computedStats ComputedElo[]
+  eloHistory    EloSnapshot[]
+  results       Result[]
 }
 
 // A player's result in a game
@@ -92,40 +88,37 @@ model Result {
 
 // A game bewteen two or more players
 model Game {
-  id          String @id @default(cuid())
-  results     Result[]
-  match       Match @relation(fields: [matchId], references: [id])
-  matchId     String
-  timestamp   DateTime?
+  id        String    @id @default(cuid())
+  matchId   String
+  timestamp DateTime?
+  match     Match     @relation(fields: [matchId], references: [id])
+  results   Result[]
 }
 
 model Match {
-  id          String @id @default(cuid())
-  games       Game[]
-  event       Event @relation(fields: [eventId], references: [id])
-  eventId     String
-  type        MatchType @default(COMPETITIVE)
-  rom         RomVersion @default(NTSC)
-  eloChanges  EloSnapshot[]
-  timestamp   DateTime  // required for Elo
-  video       String?
+  id         String        @id @default(cuid())
+  eventId    String?
+  timestamp  DateTime
+  video      String?
+  rom        RomVersion    @default(NTSC)
+  type       MatchType     @default(COMPETITIVE)
+  event      Event?        @relation(fields: [eventId], references: [id])
+  eloChanges EloSnapshot[]
+  games      Game[]
 }
 
 model EloSnapshot {
-  id          String @id @default(cuid())
-  player      Player @relation(fields: [playerId], references: [id])
-  playerId    String
-  match       Match @relation(fields: [matchId], references: [id])
-  matchId     String
-  version     EloVersion @relation(fields: [versionId], references: [id])
-  versionId   String
-
-  index       Int // nth match for player
-  victor      Boolean
-  newElo      Float
-
-  // whether this snapshot is the latest entry
-  current     Boolean @default(true)
+  id        String     @id @default(cuid())
+  playerId  String
+  matchId   String
+  index     Int
+  victor    Boolean
+  newElo    Float
+  versionId String
+  current   Boolean    @default(true)
+  match     Match      @relation(fields: [matchId], references: [id])
+  player    Player     @relation(fields: [playerId], references: [id])
+  version   EloVersion @relation(fields: [versionId], references: [id])
 
   // one elo snapshot per player, match, and version
   @@unique([playerId, matchId, versionId])
@@ -137,10 +130,10 @@ model EloSnapshot {
 }
 
 model EloVersion {
-  id              String @id @default(cuid())
-  version         String @unique
-  history         EloSnapshot[]
-  computedValues  ComputedElo[]
+  id             String        @id @default(cuid())
+  version        String        @unique
+  computedValues ComputedElo[]
+  history        EloSnapshot[]
 }
 
 
@@ -149,22 +142,16 @@ model EloVersion {
 // table of Elo-related values nontrivially determined
 // computed values table is updated periodically
 model ComputedElo {
-  player      Player @relation(fields: [playerId], references: [id])
-  playerId    String
-  version     EloVersion @relation(fields: [versionId], references: [id])
-  versionId   String
-
-  // this is the ONLY computed value in the table that
-  // can be updated after a match that the corresponding
-  // player did *not* participate in, so the parse/update
-  // function is separate.
-  rank        Int
-
-  elo         Float
-  winCount    Int
-  lossCount   Int
-  highestElo  Float
-  lastMatch   DateTime
+  playerId   String
+  versionId  String
+  rank       Int
+  elo        Float
+  winCount   Int
+  lossCount  Int
+  highestElo Float
+  lastMatch  DateTime
+  player     Player     @relation(fields: [playerId], references: [id])
+  version    EloVersion @relation(fields: [versionId], references: [id])
 
   @@id([playerId, versionId])
 }

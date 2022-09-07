@@ -73,24 +73,29 @@ function randomMatch(playerId1: string, playerId2: string) {
   };
 }
 
+function randomPlayer() {
+  const firstName = faker.name.firstName();
+  const lastName = faker.name.lastName();
+
+  return {
+    eloName: faker.internet.userName(firstName, lastName),
+    name: firstName + " " + lastName,
+    playstyles: sampleSize(Playstyle),
+    country: faker.address.countryCode(),
+  }
+}
+
 async function main() {
 
   // random players
   const playerIds: string[] = [];
 
   for (let i = 0; i < playerCount; ++i) {
-    const firstName = faker.name.firstName();
-    const lastName = faker.name.lastName();
-    const eloName = faker.internet.userName(firstName, lastName);
+    const p = randomPlayer();
     const player = await prisma.player.upsert({
-      where: { eloName },
+      where: { eloName: p.eloName },
       update: { },
-      create: {
-        eloName: `${eloName}${i}`,
-        name: `${firstName} ${lastName}`,
-        playstyles: sampleSize(Playstyle),
-        country: faker.address.countryCode(),
-      }
+      create: p
     });
 
     playerIds.push(player.id);
