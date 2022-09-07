@@ -1,5 +1,7 @@
 import { 
   Match as MatchP,
+  Game,
+  Result,
   MatchType,
   RomVersion
 } from "@prisma/client";
@@ -40,5 +42,5 @@ export type MatchWrapper = {
   rom?:         RomVersion;
   timestamp?:   Date;
   submatches:   Match[];
-  prismaObject: MatchP;
+  prismaObject: MatchP & {games: (Game & {results: Result[]})[]};
 }

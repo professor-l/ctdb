@@ -5,8 +5,8 @@ import { Playstyle } from '../src/types';
 
 const prisma = new PrismaClient();
 
-const playerCount = 1000;
-const matchCount = 20;
+const playerCount = 16;
+const matchCount = 100;
 
 // TODO: Add more seeds in here, maybe add randomization too
 // TODO: Abstractions possible with model attributes
