@@ -17,7 +17,7 @@ export const pullComputedElo = async (
     where: {
       playerId_versionId: {
         playerId,
-        versionId: context.eloVersionId,
+        versionId: context.eloVersion.id,
       },
     },
   });
@@ -35,7 +35,7 @@ export const pullManyComputedElo = async (
       playerId: {
         in: playerIds,
       },
-      versionId: context.eloVersionId,
+      versionId: context.eloVersion.id,
     },
   });
 
@@ -125,7 +125,7 @@ const matchConverter = (
 
         // cleverly index winner and loser
         // (since typescript doesn't allow `!n` on a number)
-        const winner = r[0].rank > r[1].rank ? 0 : 1;
+        const winner = r[0].rank < r[1].rank ? 0 : 1;
         const loserScore = r[(winner * -1) + 1].score;
 
         submatches[key].winners.push(winner);

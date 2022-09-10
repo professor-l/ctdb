@@ -1,10 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { EloVersion, PrismaClient } from "@prisma/client";
 
 export const prisma = new PrismaClient();
 
 export type GraphQLContext = {
   prisma: PrismaClient;
-  eloVersionId: string;
+  eloVersion: EloVersion;
 }
 
 export async function contextFactory(): Promise<GraphQLContext> {
@@ -24,6 +24,6 @@ export async function contextFactory(): Promise<GraphQLContext> {
   
   return {
     prisma,
-    eloVersionId: currentEloVersion.id,
+    eloVersion: currentEloVersion,
   };
 }

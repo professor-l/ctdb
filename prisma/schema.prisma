@@ -132,6 +132,7 @@ model EloSnapshot {
 model EloVersion {
   id             String        @id @default(cuid())
   version        String        @unique
+  startingValue  Float         @default(1200)
   computedValues ComputedElo[]
   history        EloSnapshot[]
 }
@@ -146,10 +147,10 @@ model ComputedElo {
   versionId  String
   rank       Int
   elo        Float
-  winCount   Int
-  lossCount  Int
+  winCount   Int        @default(0)
+  lossCount  Int        @default(0)
   highestElo Float
-  lastMatch  DateTime
+  lastMatch  DateTime   @default("1970-01-01T00:00:00+00:00")
   player     Player     @relation(fields: [playerId], references: [id])
   version    EloVersion @relation(fields: [versionId], references: [id])
 

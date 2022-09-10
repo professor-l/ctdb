@@ -17,6 +17,8 @@ function randomResults(playerId1: string, playerId2: string) {
     Math.floor(Math.random() * 1300000)
   ];
 
+  const r = scores[0] > scores[1] ? 1 : 2;
+
   return [
     {
       player: {
@@ -25,8 +27,8 @@ function randomResults(playerId1: string, playerId2: string) {
         }
       },
       styles: sampleSize(Playstyle),
-      score: Math.max.apply(undefined, scores),
-      rank: 1
+      score: scores[0],
+      rank: r,
     },
     {
       player: {
@@ -35,8 +37,8 @@ function randomResults(playerId1: string, playerId2: string) {
         }
       },
       styles: sampleSize(Playstyle),
-      score: Math.min.apply(undefined, scores),
-      rank: 2
+      score: scores[1],
+      rank: (r * -1) + 3,
     }
   ];
 }
