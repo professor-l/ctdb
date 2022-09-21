@@ -3,6 +3,8 @@ import {readFileSync} from 'fs'
 import { CountryCodeResolver } from 'graphql-scalars';
 import { initial } from 'lodash';
 import { StringLiteral } from 'typescript';
+import org from '../../src/resolvers/Organization';
+import { organizations, init } from './orgList';
 
 // Storing all the data we find along the way in maps, keyed by name, except for matches
 // QUESTION: does it make sense to build the actual objects as we go or use temp types
@@ -13,8 +15,9 @@ import { StringLiteral } from 'typescript';
 // var games = new Map<number, Game>();
 // var matches = new Map<number, Match>();
 
-type OrganizationTemp = {
+export type OrganizationTemp = {
     id : string,
+    keywords : string[],
     name : string,
     events : EventTemp[]
 };
@@ -55,7 +58,6 @@ type MatchTemp = {
     games : GameTemp[]
 };
 
-var organizations = new Map<string, OrganizationTemp>();
 var events = new Map<string, EventTemp>();
 var players = new Map<string, PlayerTemp>();
 var results = new Map<string, ResultTemp>();
@@ -90,21 +92,6 @@ function main(){
         11 : streamer/location
         12 : competitve or friendly
         */
-
-        // TODO: learn what's up with these events
-        // 'Singapore' | Multiple years here
-        // CTWQ WestCoast 2018 | probably Classic Tetris World Championship?
-        // NeoGeo | Is NeoGeo the organizer? Google says it's a console
-        // Other | There's a few 'Other' where the only other info is location. Presumably I need to ask someone who knows the competitors
-        // Tetris Deathmatch | I'd assume the streamer is the organizer but need to make sure
-        // CTAO
-        // Canada NWOntario
-        // Canada Manitoba
-        // Canada 2019
-        // CT Entertainment | This feels like it's probably the name of the organizer too
-        // 'Best of 75' | the organizer is just 'Richard' for this one
-        // CTXYZ
-        // Raccoon Cup | p sure this is self explanatory but it might be hosted by SFU Tetris?
         
 
         // Create any new necessary objects
@@ -119,31 +106,32 @@ function main(){
             }
             events.set(eventId, e);
 
-            // Known organizers
-            if (eventId.search('CTM') != -1){
-                organizations.get('CTM')?.events.push(e);
-            } else if (eventId.search('CTWC') != -1){
-                organizations.get('CTWC')?.events.push(e);
-            } else if (eventId.search('GDQ') != -1){
-                organizations.get('GDQ')?.events.push(e);
-            } else if (eventId.search('CT Gauntlet') != -1){
-                organizations.get('CT Gauntlet')?.events.push(e);
-            } else if (eventId.search('CTLATAM') != -1){
-                organizations.get('CTLATAM')?.events.push(e);
-            } else if (eventId.search('CT League') != -1){
-                organizations.get('CT League')?.events.push(e);
+            var orgAdded : Boolean = false;
+            for(const org of organizations.values()){
+                for(const keyword of org.keywords){
+                    if(keyword[0] == '!' && eventId.search(keyword.substring(1)) != -1){
+                        orgAdded = false;
+                        break;
+                    } else if (eventId.search(keyword) != -1 || data[11].search(keyword) != -1){
+                        orgAdded = true;
+                        e.organizer = org.id;
+                        org.events.push(e);
+                    }
+                }
+                if(orgAdded){
+                    break;
+                }
             }
-            // Unknown organizers
-            else if (organizations.has(data[11])){
-                organizations.get(data[11])?.events.push(e);
-            } else {
+            if(!orgAdded){
                 organizations.set(data[11], {
                     id : data[11],
+                    keywords : [data[11]],
                     name : data[11],
                     events : [e]
-                })
+                });
             }
         } 
+
         if (!players.has(data[1])){
             var p : PlayerTemp = {
                 name : data[1],
@@ -201,49 +189,11 @@ function main(){
         matches.get(data[0])?.games.push(g);
     }
     
+    console.log(organizations.get('CTM'));
     for (const org of organizations.entries()){
         console.log(org[1]);
-        console.log(org[1].events);
     }
 }
 
-// Initialize data structures with known values
-function init() {
-    // Initialize known organizers
-    // If title contains 'CTM' organizer is Classic Tetris Monthly
-    // If title contains 'CTWC' organizer is Classic Tetris World Championship
-    // If title contains 'GDQ' organizer is Games Done Quick
-    // If title contains 'CT Gauntlet' organizer is Classic Tetris Gauntlet
-    organizations.set('CTM', {
-        id : 'CTM',
-        name : 'Classic Tetris Monthly',
-        events : []
-    })
-    organizations.set('CTWC', {
-        id : 'CTWC',
-        name : 'Classic Tetris World Championship',
-        events : []
-    })
-    organizations.set('GDQ', {
-        id : 'GDQ',
-        name : 'Games Done Quick',
-        events : []
-    })
-    organizations.set('CT Gauntlet', {
-        id : 'CT Gauntlet',
-        name : 'Classic Tetris Gauntlet',
-        events : []
-    })
-    organizations.set('CTLATAM', {
-        id : 'CTLATAM',
-        name : 'Classic Tetris LATAM',
-        events : []
-    })
-    organizations.set('CT League', {
-        id : 'CT League',
-        name : 'Classic Tetris League',
-        events : []
-    })
 
-}
 main();
