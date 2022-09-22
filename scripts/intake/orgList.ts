@@ -1,10 +1,10 @@
-import { OrganizationTemp } from ".";
+import { OrganizationTemp } from './types';
 
 export var organizations = new Map<string, OrganizationTemp>();
 
 // TODO: learn what's up with these events
 // NeoGeo | Is NeoGeo the organizer? Google says it's a console
-// CTAO
+// CTAO | Classic Tetris Australia Online
 // 'Best of 75' | the organizer is just 'Richard' for this one
 // CTXYZ
 // Elo Battles
