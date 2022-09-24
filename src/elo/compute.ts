@@ -2,8 +2,8 @@ import { sum } from "lodash";
 
 import { 
   ComputedElo as ComputedEloIM,
-  Match as MatchIM,
-} from "./types";
+  Submatch as SubmatchIM,
+} from "../util/types";
 
 
 // function to compute player-specific k-factor
@@ -40,7 +40,7 @@ const totalMatches = (playerData: ComputedEloIM): number => {
 };
 
 // returns id of player that  won match
-export const winner = (matchData: MatchIM): string => {
+export const winner = (matchData: SubmatchIM): string => {
   return (
     sum(matchData.winners) >= (matchData.winners.length / 2)
     ? matchData.player1Id : matchData.player0Id
@@ -57,7 +57,7 @@ export const expected = (player: ComputedEloIM, opponent: ComputedEloIM): number
 
 // custom coefficient that changes Elo weighting
 // depending on the number of games played
-export const g = (matchData: MatchIM): number => {
+export const g = (matchData: SubmatchIM): number => {
   let w = 0, l = 0;
 
   matchData.winners.forEach(g => {
@@ -79,25 +79,9 @@ export const g = (matchData: MatchIM): number => {
   ) / 2;
 };
 
-// NOTE: does not update lastMatch timestamp
-export const updateComputedFromChange = (
-  c: ComputedEloIM,
-  change: number
-) => {
-
-  const win = (change > 0 ? 1 : 0);
-  c.elo += change;
-
-  if (c.elo > (c.highestElo || 0))
-    c.highestElo = c.elo;
-
-  c.winCount = (c.winCount || 0) + win;
-  c.lossCount = (c.lossCount || 0) - (win - 1);
-};
-
 // updateComputedElo
 // export default async (
-//   match: MatchIM,
+//   match: SubmatchIM,
 //   players: [ComputedEloIM, ComputedEloIM],
 // ) => {
 
