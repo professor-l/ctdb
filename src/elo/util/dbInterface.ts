@@ -24,7 +24,8 @@ export const pullComputedElos = async (
   });
 
   const elos: ComputedEloIM[] = [];
-
+  const newPlayers: string[] = [];
+  
   // populate absent computedElos with null
   playerIds.forEach(id => {
     let found = false;
@@ -37,8 +38,13 @@ export const pullComputedElos = async (
       }
     }
 
-    if (!found)
-      elos.push(newComputedElo(id, context));
+    if (!found && newPlayers.indexOf(id) === -1)
+      newPlayers.push(id);
+
+  });
+
+  (await createNewComputedElos(newPlayers, context)).forEach(n => {
+    elos.push(n);
   });
 
   return elos;
@@ -97,20 +103,33 @@ export const pullComputedElosInRange = async (
   return e;
 };
 
-const newComputedElo = (
-  playerId: string,
+const createNewComputedElos = async (
+  playerIds: string[],
   context: GraphQLContext
-): ComputedEloIM => {
+): Promise<ComputedEloIM[]> => {
 
-  return {
-    playerId,
-    elo: context.eloVersion.startingValue,
-    highestElo: context.eloVersion.startingValue,
-    winCount: 0,
-    lossCount: 0,
-    lastMatch: new Date(0),
-    unwritten: true,
-  };
+  const toReturn: ComputedEloIM[] = [];
+
+  const c = await context.prisma.computedElo.createMany({
+    data: playerIds.map(p => { 
+      const toAdd = {
+        playerId: p,
+        versionId: context.eloVersion.id,
+        rank: 0,
+        elo: context.eloVersion.startingValue,
+        highestElo: context.eloVersion.startingValue,
+        winCount: 0,
+        lossCount: 0,
+        lastMatch: new Date(0),
+      };
+
+      toReturn.push(<ComputedEloIM>toAdd);
+      return toAdd;
+    }),
+  });
+
+  return toReturn;
+
 };
 
 // NOTE: does not update lastMatch timestamp
@@ -142,15 +161,13 @@ export const writeComputedElos = async (
       })
     )
   );
-
-  return updated;
 };
 
 export const writeEloSnapshots = async (
   snapshots: EloSnapshotIM[],
   context: GraphQLContext
 ) => {
-  context.prisma.eloSnapshot.createMany({
+  return context.prisma.eloSnapshot.createMany({
     data: snapshots,
   });
 };

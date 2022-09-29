@@ -29,25 +29,33 @@ export const eloPipeline = async (
     min, max, context
   );
 
+  // highest ranked player (lowest number) - "starting point" for rank
   let topRank = Infinity;
 
+  // update elo value for each one needing an update
   computedElosToUpdate.forEach(elo => {
-    if (elo.rank < topRank)
+    if (elo.rank < topRank && elo.rank > 0)
       topRank = elo.rank;
+
+    const computed = computedElos.get(elo.playerId);
 
     updateComputedElo(elo, computedElos.get(elo.playerId));
   });
 
-  computedElosToUpdate.sort((a, b) => (b.elo - a.elo));
+  // if top rank is still undefined, it must be 1
+  if (topRank === Infinity) topRank = 1;
 
+  // update rank
+  computedElosToUpdate.sort((a, b) => (b.elo - a.elo));
   computedElosToUpdate.forEach((elo, i) => {
     elo.rank = topRank + i;
   });
 
-  const updated = await writeComputedElos(computedElosToUpdate, context);
+  // write the computed elos to the database!
+  await writeComputedElos(computedElosToUpdate, context);
 
-  // asynchronous, since
-  writeEloSnapshots(eloSnapshots, context);
+  // add the snapshots, since they're less important
+  await writeEloSnapshots(eloSnapshots, context);
 
-  return updated;
+  return 0;
 };

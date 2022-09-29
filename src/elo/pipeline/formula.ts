@@ -2,7 +2,7 @@ import { ComputedElo, Submatch } from "../util/types";
 import { 
   oldRating, k, g, winner,
   expected
-} from "../compute";
+} from "./compute";
 
 
 export const computeMatch = (
@@ -12,11 +12,9 @@ export const computeMatch = (
 ): [number, number] => {
 
   const change0 = (
-    oldRating(player0Elo) + (
-      k(player0Elo) * g(match) * (
-        (winner(match) == player0Elo.playerId ? 1 : 0) -
-        expected(player0Elo, player1Elo)
-      )
+    k(player0Elo) * g(match) * (
+      (winner(match) == player0Elo.playerId ? 1 : 0) -
+      expected(player0Elo, player1Elo)
     )
   );
 
