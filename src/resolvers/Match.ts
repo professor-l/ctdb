@@ -17,7 +17,7 @@ const match = {
     context: GraphQLContext
   ) => {
     return context.prisma.event.findUnique({
-      where: { id: parent.eventId },
+      where: { id: parent.eventId || undefined },
     });
   },
 
@@ -27,7 +27,7 @@ const match = {
   ) => {
     return context.prisma.eloSnapshot.findMany({
       where: {
-        versionId: context.eloVersionId,
+        versionId: context.eloVersion.id,
         matchId: parent.id,
       }
     });

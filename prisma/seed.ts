@@ -5,8 +5,8 @@ import { Playstyle } from '../src/types';
 
 const prisma = new PrismaClient();
 
-const playerCount = 1000;
-const matchCount = 20;
+const playerCount = 16;
+const matchCount = 100;
 
 // TODO: Add more seeds in here, maybe add randomization too
 // TODO: Abstractions possible with model attributes
@@ -17,6 +17,8 @@ function randomResults(playerId1: string, playerId2: string) {
     Math.floor(Math.random() * 1300000)
   ];
 
+  const r = scores[0] > scores[1] ? 1 : 2;
+
   return [
     {
       player: {
@@ -25,8 +27,8 @@ function randomResults(playerId1: string, playerId2: string) {
         }
       },
       styles: sampleSize(Playstyle),
-      score: Math.max.apply(undefined, scores),
-      rank: 1
+      score: scores[0],
+      rank: r,
     },
     {
       player: {
@@ -35,8 +37,8 @@ function randomResults(playerId1: string, playerId2: string) {
         }
       },
       styles: sampleSize(Playstyle),
-      score: Math.min.apply(undefined, scores),
-      rank: 2
+      score: scores[1],
+      rank: (r * -1) + 3,
     }
   ];
 }
@@ -73,24 +75,29 @@ function randomMatch(playerId1: string, playerId2: string) {
   };
 }
 
+function randomPlayer() {
+  const firstName = faker.name.firstName();
+  const lastName = faker.name.lastName();
+
+  return {
+    eloName: faker.internet.userName(firstName, lastName),
+    name: firstName + " " + lastName,
+    playstyles: sampleSize(Playstyle),
+    country: faker.address.countryCode(),
+  }
+}
+
 async function main() {
 
   // random players
   const playerIds: string[] = [];
 
   for (let i = 0; i < playerCount; ++i) {
-    const firstName = faker.name.firstName();
-    const lastName = faker.name.lastName();
-    const eloName = faker.internet.userName(firstName, lastName);
+    const p = randomPlayer();
     const player = await prisma.player.upsert({
-      where: { eloName },
+      where: { eloName: p.eloName },
       update: { },
-      create: {
-        eloName: `${eloName}${i}`,
-        name: `${firstName} ${lastName}`,
-        playstyles: sampleSize(Playstyle),
-        country: faker.address.countryCode(),
-      }
+      create: p
     });
 
     playerIds.push(player.id);

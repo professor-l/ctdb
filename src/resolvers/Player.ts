@@ -10,7 +10,7 @@ const player = {
     return context.prisma.eloSnapshot.findMany({
       where: {
         playerId: parent.id,
-        versionId: context.eloVersionId,
+        versionId: context.eloVersion.id,
       },
     });
   },
