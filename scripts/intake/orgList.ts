@@ -12,13 +12,7 @@ export var organizations = new Map<string, OrganizationTemp>();
 // Sixfour Invitational
 // BeNeLux
 
-// Initialize data structures with known values
 export function init() {
-    // Initialize known organizers
-    // If title contains 'CTM' organizer is Classic Tetris Monthly
-    // If title contains 'CTWC' organizer is Classic Tetris World Championship
-    // etc...
-
     organizations.set('CTM', {
         id : 'CTM',
         keywords : ['CTM', 'Deathmatch'],

@@ -1,6 +1,7 @@
 import { readFileSync } from "fs";
 import { EventTemp, PlayerTemp, ResultTemp, GameTemp, MatchTemp } from "./types";
 import { organizations } from "./orgList";
+import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 
 export var events = new Map<string, EventTemp>();
 export var players = new Map<string, PlayerTemp>();
@@ -102,6 +103,13 @@ export function parseCSV(){
             };
             matches.set(data[0], m);
             events.get(data[7] + " " + data[8])?.matches.push(m);
+        } else {
+            if (!matches.get(data[0])?.players.includes((players.get(data[1])) as PlayerTemp)){
+                matches.get(data[0])?.players.push((players.get(data[1])) as PlayerTemp);
+            }
+            if (!matches.get(data[0])?.players.includes((players.get(data[4])) as PlayerTemp)){
+                matches.get(data[0])?.players.push((players.get(data[4])) as PlayerTemp);
+            }
         }
         
 
@@ -124,6 +132,7 @@ export function parseCSV(){
         }
         players.get(data[4])?.results.push(p2result);
         results.set(data[0] + " " + data[4], p2result);
+
         var g : GameTemp = {
             id : data[0] + " " + data[1] + " " + data[4],
             match : matches.get(data[0]) as MatchTemp,
@@ -134,9 +143,98 @@ export function parseCSV(){
 
         matches.get(data[0])?.games.push(g);
     }
-    
-    console.log(organizations.get('CTM'));
-    for (const org of organizations.entries()){
-        console.log(org[1]);
+
+    var multiplayerMatches : MatchTemp[] = [];
+    var sweepCase : MatchTemp[] = [];
+    for (var match of matches.entries()){
+        if(match[1].games.length >= 3){
+            multiplayerMatches.push(match[1]);
+            // rectify games and results
+            /*
+            Problem: For 3 player matches, the results are stored as 3 different games between each pair of player.
+                     We need to change this to figure out how many games actually got played and store multiple games with three results for each
+            
+            For players a, b, c, we have results ab, ac, bc,
+            For games g, each result will total both sides to g
+            Where A is how many games a beat b, C is how many games c beat a, and B is how many games b beat c
+               |  a  |  b  |  c  |
+            ab |  A  | g-A |  X  | 
+            ac | g-C |  X  |  C  |
+            bc |  X  |  B  | g-B |
+
+            We need to determine the order of rankings for each game.
+
+            Special cases:
+
+            player a wins all games against player b:
+                Solved, as ac determines how many games a vs c are first, and bv determines how many games b vs c are last
+                14 matches fit this case; 13 remain to be solved
+
+            */
+            var gameOne : number[] = [match[1].games[0].results[0].score, match[1].games[0].results[1].score];   //ab
+            var gameTwo : number[] = [match[1].games[1].results[0].score, match[1].games[1].results[1].score];   //ac
+            var gameThree : number[] = [match[1].games[2].results[0].score, match[1].games[2].results[1].score]; //bc
+            var trueGameTotal : number = gameOne[0] + gameOne[1];
+            var trueGameStandings : PlayerTemp[];
+
+            // TODO: properly detect which games are which matchups since there isn't actually a standard order
+            var playerA : PlayerTemp = match[1].games[0].results[0].player;
+            var playerB : PlayerTemp = match[1].games[0].results[1].player;
+            var playerC : PlayerTemp = match[1].games[1].results[1].player;
+            
+            if(gameOne[0] > gameOne[1]){ // a > b
+                if(gameTwo[0] > gameTwo[1]){ // a > c
+                    if(gameThree[0] > gameThree[1]){ // b > c
+                        trueGameStandings = [playerA,
+                            playerB,
+                            playerC];
+                    } else { // c > b
+                        trueGameStandings = [playerA,
+                            playerC,
+                            playerB];
+                    }
+                } else { // c > a (forces c > b)
+                    trueGameStandings = [playerC,
+                        playerA,
+                        playerB];
+                }
+            } else { // b > a
+                if(gameTwo[0] > gameTwo[1]){ // a > c ( forces b > c)
+                    trueGameStandings = [playerB,
+                        playerA,
+                        playerC];
+                } else { // c > a
+                    if(gameThree[0] > gameThree[1]){ // b > c
+                        trueGameStandings = [playerB,
+                            playerC,
+                            playerA];
+                    } else { // c > b
+                        trueGameStandings = [playerC,
+                            playerB,
+                            playerA];
+                    }
+                }
+            }
+            
+            for(const game of match[1].games.entries()){
+                for(const result of game[1].results.entries()){
+                    if(result[1].score == 0 && !sweepCase.includes(match[1])){
+                        sweepCase.push(match[1]);
+                    }
+                }
+            }
+
+            console.log(match[1]);
+            for(const game of match[1].games.entries()){
+                console.log(game[1].id);
+            }
+            console.log(trueGameStandings);
+        }
     }
+    for (const match of multiplayerMatches){
+        console.log(match.id)
+    }
+    console.log("Total Matches : " + matches.size);
+    console.log("3 Player Matches : " + multiplayerMatches.length);
+    console.log("Swept matches : " + sweepCase.length);
 }
