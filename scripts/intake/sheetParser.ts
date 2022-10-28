@@ -99,7 +99,8 @@ export function parseCSV(){
                 eventId : data[7],
                 players : [players.get(data[1]) as PlayerTemp, players.get(data[4]) as PlayerTemp],
                 competitive : (data[12]),
-                games : []
+                games : [],
+                timestamp : new Date(data[9]) 
             };
             matches.set(data[0], m);
             events.get(data[7] + " " + data[8])?.matches.push(m);
@@ -136,7 +137,7 @@ export function parseCSV(){
         var g : GameTemp = {
             id : data[0] + " " + data[1] + " " + data[4],
             match : matches.get(data[0]) as MatchTemp,
-            timestamp : data[9],
+            timestamp : new Date(data[9]),
             results : [p1result, p2result]
         }
         games.set(data[0] + " " + data[1] + " " + data[4], g);

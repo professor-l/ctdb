@@ -29,7 +29,7 @@ export type ResultTemp = {
 export type GameTemp = {
     id : string,
     match : MatchTemp,
-    timestamp : string,
+    timestamp : Date,
     results : ResultTemp[]
 }
 
@@ -38,5 +38,6 @@ export type MatchTemp = {
     eventId : string,
     players : PlayerTemp[],
     competitive : string,
-    games : GameTemp[]
+    games : GameTemp[],
+    timestamp : Date
 };
