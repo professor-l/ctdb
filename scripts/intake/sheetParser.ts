@@ -115,42 +115,78 @@ export function parseCSV(){
         
 
         // Create a new game and result, add to match
-        var p1result : ResultTemp = {
-            id : data[0] + " " + data[1],
-            player : players.get(data[1]) as PlayerTemp,
-            gameId : data[0] + " " + data[1] + " " + data[4],
-            rank : (parseInt(data[2]) > parseInt(data[3]) ? 1 : 2),
-            score : parseInt(data[2])
+        // TODO: actually create multiple games
+        var p1Victories = parseInt(data[2]);
+        var p2Victories = parseInt(data[3]);
+        for(var i = 0; i < p1Victories; ++i){
+            var p1result : ResultTemp = {
+                id : data[0] + " " + data[1],
+                player : players.get(data[1]) as PlayerTemp,
+                gameId : data[0] + " " + data[1] + " " + data[4],
+                rank : 1,
+                score : parseInt(data[2])
+            }
+            players.get(data[1])?.results.push(p1result);
+            results.set(data[0] + " " + data[1], p1result);
+            var p2result : ResultTemp = {
+                id : data[0] + " " + data[4],
+                player : players.get(data[4]) as PlayerTemp,
+                gameId : data[0] + " " + data[1] + " " + data[4],
+                rank : 2,
+                score : parseInt(data[3])
+            }
+            players.get(data[4])?.results.push(p2result);
+            results.set(data[0] + " " + data[4], p2result);
+    
+            var g : GameTemp = {
+                id : data[0] + " " + data[1] + " " + data[4] + " p1 " + i,
+                match : matches.get(data[0]) as MatchTemp,
+                timestamp : new Date(data[9]),
+                results : [p1result, p2result]
+            }
+            games.set(data[0] + " " + data[1] + " " + data[4] + " p1 " + i, g);
+    
+            matches.get(data[0])?.games.push(g);
         }
-        players.get(data[1])?.results.push(p1result);
-        results.set(data[0] + " " + data[1], p1result);
-        var p2result : ResultTemp = {
-            id : data[0] + " " + data[4],
-            player : players.get(data[4]) as PlayerTemp,
-            gameId : data[0] + " " + data[1] + " " + data[4],
-            rank : (parseInt(data[2]) > parseInt(data[3]) ? 2 : 1),
-            score : parseInt(data[3])
+        for(var i = 0; i < p2Victories; ++i){
+            var p1result : ResultTemp = {
+                id : data[0] + " " + data[1],
+                player : players.get(data[1]) as PlayerTemp,
+                gameId : data[0] + " " + data[1] + " " + data[4],
+                rank : 2,
+                score : parseInt(data[2])
+            }
+            players.get(data[1])?.results.push(p1result);
+            results.set(data[0] + " " + data[1], p1result);
+            var p2result : ResultTemp = {
+                id : data[0] + " " + data[4],
+                player : players.get(data[4]) as PlayerTemp,
+                gameId : data[0] + " " + data[1] + " " + data[4],
+                rank : 1,
+                score : parseInt(data[3])
+            }
+            players.get(data[4])?.results.push(p2result);
+            results.set(data[0] + " " + data[4], p2result);
+    
+            var g : GameTemp = {
+                id : data[0] + " " + data[1] + " " + data[4] + " p2 " + i,
+                match : matches.get(data[0]) as MatchTemp,
+                timestamp : new Date(data[9]),
+                results : [p1result, p2result]
+            }
+            games.set(data[0] + " " + data[1] + " " + data[4] + " p2 " + i, g);
+    
+            matches.get(data[0])?.games.push(g);
         }
-        players.get(data[4])?.results.push(p2result);
-        results.set(data[0] + " " + data[4], p2result);
-
-        var g : GameTemp = {
-            id : data[0] + " " + data[1] + " " + data[4],
-            match : matches.get(data[0]) as MatchTemp,
-            timestamp : new Date(data[9]),
-            results : [p1result, p2result]
-        }
-        games.set(data[0] + " " + data[1] + " " + data[4], g);
-
-        matches.get(data[0])?.games.push(g);
     }
 
+
+    // Rectify Games and Results, handling 3+ player matches differently from 2 player
     var multiplayerMatches : MatchTemp[] = [];
     var sweepCase : MatchTemp[] = [];
     for (var match of matches.entries()){
-        if(match[1].games.length >= 3){
+        if(match[1].players.length > 2){
             multiplayerMatches.push(match[1]);
-            // rectify games and results
             /*
             Problem: For 3 player matches, the results are stored as 3 different games between each pair of player.
                      We need to change this to figure out how many games actually got played and store multiple games with three results for each
@@ -233,7 +269,7 @@ export function parseCSV(){
         }
     }
     for (const match of multiplayerMatches){
-        console.log(match.id)
+        console.log(match.id);
     }
     console.log("Total Matches : " + matches.size);
     console.log("3 Player Matches : " + multiplayerMatches.length);
