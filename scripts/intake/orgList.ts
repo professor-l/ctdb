@@ -1,7 +1,5 @@
 import { OrganizationTemp } from './types';
 
-export var organizations = new Map<string, OrganizationTemp>();
-
 // TODO: learn what's up with these events
 // NeoGeo | Is NeoGeo the organizer? Google says it's a console
 // CTAO | Classic Tetris Australia Online
@@ -13,6 +11,9 @@ export var organizations = new Map<string, OrganizationTemp>();
 // BeNeLux
 
 export function init() {
+
+    const organizations = new Map<string, OrganizationTemp>();
+
     organizations.set('CTM', {
         id : 'CTM',
         keywords : ['CTM', 'Deathmatch'],
@@ -242,4 +243,6 @@ export function init() {
         keywords : ['Gran Colombia'],
         events : []
     });
+
+    return organizations;
 }

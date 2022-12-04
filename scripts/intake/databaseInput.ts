@@ -1,72 +1,100 @@
-import { OrganizationTemp, EventTemp, PlayerTemp, ResultTemp, GameTemp, MatchTemp } from "./types";
-import { events, players, results, games, matches } from "./sheetParser";
-import { MatchType, RomVersion } from "../../src/types";
-import { organizations } from "./orgList";
-import { GraphQLContext, prisma } from "../../src/context";
-import { Organization, Event, Match, Player, Result, Game } from "@prisma/client";
+import { prisma } from "../../src/context";
+import { OrganizationTemp } from "./types";
+import { RomVersion, MatchType, Match } from "@prisma/client";
 
-export async function input(){
-    // Loop through each data structure (or just use the highest level and go down?)
-    for (const org of organizations.values()){
-        const finalOrg = await prisma.organization.create({
+export async function addToDatabase(orgs: Map<string, OrganizationTemp>) {
+  let matches = 0;
+
+  const orgList = Array.from(orgs.values());
+
+  console.log(orgList.map(o => o.name));
+
+  // for each org
+  for (const o of orgList) {
+
+    // add org to db
+    const prismaOrg = await prisma.organization.upsert({
+      where: {
+        name: o.name,
+      },
+      update: {},
+      create: {
+        name: o.name,
+        description: "",
+      }
+    });
+
+    // for each event
+    for (const e of o.events) {
+      // add event to db
+      const prismaEvent = await prisma.event.upsert({
+        where: { name: e.name },
+        update: {},
+        create: {
+          name: e.name,
+          organizerId: prismaOrg.id,
+        }
+      });
+
+      // for each match
+      for (const m of e.matches) {
+        // add match to db
+        let prismaMatch: Match;
+        try {
+          prismaMatch = await prisma.match.create({
             data: {
-                name: org.name,
-                description: "PLACEHOLDER",
+              eventId: prismaEvent.id,
+              timestamp: m.timestamp,
+              rom: RomVersion.NTSC,
+              type: m.competitive ? MatchType.COMPETITIVE : MatchType.FRIENDLY,
             }
-        });        
-        for (const event of org.events){
-            const finalEvent = await prisma.event.create({
-                data: {
-                    name: event.name,
-                    edition: event.edition,
-                    organizerId: event.organizer,
+          });
+        } catch (err) {
+            console.log(err);
+            console.log(m);
+            console.log(prismaEvent);
+            break;
+        }
+
+        // for each game
+        for (const g of m.games) {
+          // add game to db
+          const prismaGame = await prisma.game.create({
+            data: {
+              matchId: prismaMatch.id,
+            }
+          });
+
+          // for each result
+          for (const r of g.results) {
+            // upsert player from db
+            const prismaPlayer = await prisma.player.upsert({
+                where: {
+                  eloName: r.player,
+                },
+                update: {
+                  eloName: r.player,
+                },
+                create: {
+                  eloName: r.player,
                 }
             });
-            for (const match of event.matches){
-                const finalMatch = await prisma.match.create({
-                    data: {
-                        event : {
-                            connect: { name: event.name },
-                        },
-                        timestamp: match.timestamp
-                    }
-                });
-                
-                for (const game of match.games){
-                    // results already created in player loop?
-                    const finalGame = await prisma.game.create({
-                        data: {
-                            id: game.id,
-                            matchId: game.match.id,
-                            timestamp: new Date(game.timestamp)
-                        }
-                    });
-                }
 
-                for (const player of match.players){
-                    const finalPlayer = await prisma.player.create({
-                        data: {
-                            name : player.name,
-                            eloName : player.name
-                        }
-                    });
-
-                    for(const result of player.results){
-                        const finalResult = await prisma.result.create({    
-                            data: {
-                                player: {
-                                    connect: { eloName: player.name},
-                                },
-                                game: {
-                                    connect: {id: result.gameId},
-                                },
-                                rank: result.rank,
-                                score: result.score
-                            }
-                        });
-                    }
-                }
-            }
+            // add result to db
+            await prisma.result.create({
+              data: {
+                gameId: prismaGame.id,
+                playerId: prismaPlayer.id,
+                rank: r.rank,
+                score: r.score,
+              }
+            });
+          }
         }
+        matches += 1;
+        if (matches % 100 == 0)
+          console.log("added " + matches + " matches");
+      }
     }
+  }
 }
