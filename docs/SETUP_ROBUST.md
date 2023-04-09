@@ -116,15 +116,19 @@ Finally, we can test to see if the GraphQL API and database backend are working.
 
 ```graphql
 mutation {
-    createPlayer (
-        name: "Elle"
-        country: "US"
+    createPlayer(
+        payload: {
+            eloName: "Elle"
+            playstyles: [
+                DAS
+            ]
+        }
     ) {
         id
-        name
-        country
+        eloName
+        playstyles
     }
-} 
+}
 ```
 
 Now, hit the play button at the top of the page, and the right text field should populate with an API response:
@@ -133,9 +137,11 @@ Now, hit the play button at the top of the page, and the right text field should
 {
     "data": {
         "createPlayer": {
-            "id": 1,
-            "name": "Elle",
-            "country": "US"
+            "id": "unique-random-string",
+            "eloName": "Elle",
+            "playstyles": [
+                "DAS"
+            ]
         }
     }
 }
@@ -145,9 +151,9 @@ Next, we can run a query to retrieve the data we just created. Replace the text 
 
 ```graphql
 query {
-    getPlayer(id: 1) {
-        name
-        country
+    getPlayerById(id: "replace-this-with-correct-id") {
+        eloName
+        playstyles
         id
     }
 }
@@ -158,10 +164,12 @@ Hit the play button again, and the right field should change to this:
 ```json
 {
     "data": {
-        "getPlayer": {
-            "name": "Elle",
-            "country": "US",
-            "id": 1
+        "getPlayerById": {
+            "eloName": "Elle",
+            "playstyles": [
+                "DAS"
+            ],
+            "id": "unique-random-string"
         }
     }
 }

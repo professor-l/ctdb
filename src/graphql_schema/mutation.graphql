@@ -1,6 +1,6 @@
 type Mutation {
 
-    createPlayer(info: CreatePlayerInput): Player
+    createPlayer(payload: CreatePlayerInput): Player
 
     updatePlayerName(payload: UpdatePlayerNameInput): Player
     addPlaystyle(payload: UpdatePlaystyleInput): Player
