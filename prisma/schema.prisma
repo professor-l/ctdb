@@ -137,8 +137,6 @@ model EloVersion {
   history        EloSnapshot[]
 }
 
-
-
 // COMPUTED VALUES TABLE
 // table of Elo-related values nontrivially determined
 // computed values table is updated periodically
