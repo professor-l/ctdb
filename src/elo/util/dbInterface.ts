@@ -53,23 +53,33 @@ export const pullComputedElos = async (
 
 export const pullMatches = async (
   oldestMatchId: string,
-  context: GraphQLContext
+  context: GraphQLContext,
+  newestMatchId?: string
 ): Promise<MatchIM[]> => {
 
-  const match = await context.prisma.match.findUnique({
+  const oldestMatch = await context.prisma.match.findUnique({
     where: {
       id: oldestMatchId
     }
   });
 
-  if (match == null)
+  const newestMatch = newestMatchId ? await context.prisma.match.findUnique({
+    where: {
+      id: newestMatchId
+    }
+  }) : null;
+
+  if (!oldestMatch || (newestMatchId && !newestMatch))
     return [];
 
-  // get all matches newer than that
+  // get all matches newer than oldestMatch and older than newestMatch (if
+  // provided)
   const m = await context.prisma.match.findMany({
     where: {
       timestamp: {
-        gte: match.timestamp
+        gte: oldestMatch.timestamp,
+        // only add a "less than or equal to" filter if newestMatch exists
+        ...(newestMatch && { lte: newestMatch.timestamp })
       }
     },
     include: {
