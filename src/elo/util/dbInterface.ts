@@ -88,6 +88,9 @@ export const pullMatches = async (
           results: true,
         }
       }
+    },
+    orderBy: {
+      timestamp: "asc",
     }
   });
 
