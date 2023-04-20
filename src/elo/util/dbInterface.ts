@@ -177,10 +177,24 @@ export const writeEloSnapshots = async (
   snapshots: EloSnapshotIM[],
   context: GraphQLContext
 ) => {
-  return context.prisma.eloSnapshot.createMany({
-    data: snapshots,
-  });
+  const upserts = snapshots.map(snapshot =>
+    context.prisma.eloSnapshot.upsert({
+      where: {
+        playerId_matchId_versionId: {
+          playerId: snapshot.playerId,
+          matchId: snapshot.matchId,
+          versionId: snapshot.versionId,
+        },
+      },
+      // do not update existing snapshot
+      update: { },
+      create: snapshot,
+    })
+  );
+
+  return Promise.all(upserts);
 };
+
 
 const matchConverter = (
   m: Match & {games: (Game & {results: Result[]})[]}
