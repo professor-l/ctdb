@@ -11,7 +11,7 @@
     "intake": "dotenv -e .env.development -- ts-node scripts/intake/index.ts"
   },
   "prisma": {
-    "seeed": "dotenv -e .env.development -- ts-node prisma/seed.ts"
+    "seed": "dotenv -e .env.development -- ts-node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",

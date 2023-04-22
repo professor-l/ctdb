@@ -7,12 +7,11 @@ import { updateComputedElo } from "./update";
 
 export const eloPipeline = async (
   oldestMatchId: string,
-  context: GraphQLContext,
-  newestMatchId?: string
+  context: GraphQLContext
 ) => {
 
   // pull matches from database
-  const matches = await pullMatches(oldestMatchId, context, newestMatchId);
+  const matches = await pullMatches(oldestMatchId, context);
 
   // pull computed elos from database based on matches
   const computedElos = await getComputedEloFromMatches(matches, context);

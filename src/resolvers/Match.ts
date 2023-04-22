@@ -12,7 +12,6 @@ const match = {
     }).games();
   },
 
-<<<<<<< HEAD
   event: async (
     parent: Match,
     context: GraphQLContext
@@ -21,7 +20,6 @@ const match = {
       where: { id: parent.eventId || undefined },
     });
   },
-=======
   //TODO: put this back once fix id:parent.eventId
   // event: async (
   //   parent: Match,
@@ -31,7 +29,6 @@ const match = {
   //     where: { id: parent.eventId },
   //   });
   // },
->>>>>>> e8af5aa (WIP: stuff and things)
 
   eloChanges: async (
     parent: Match,
