@@ -180,8 +180,8 @@ export const writeEloSnapshots = async (
           versionId: snapshot.versionId,
         },
       },
-      // do not update existing snapshot
-      update: { },
+      // update existing snapshot if it exists
+      update: snapshot,
       create: snapshot,
     })
   );
