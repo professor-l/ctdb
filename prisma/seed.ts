@@ -11,6 +11,9 @@ const matchCount = 100;
 // TODO: Add more seeds in here, maybe add randomization too
 // TODO: Abstractions possible with model attributes
 
+const dateLow = new Date(2020, 0, 1).toISOString();
+const dateHigh = new Date(2023, 0, 1).toISOString();
+
 function randomResults(playerId1: string, playerId2: string) {
   const scores = [
     Math.floor(Math.random() * 1300000),
@@ -53,7 +56,7 @@ function randomGames(playerId1: string, playerId2: string) {
     const results = randomResults(playerId1, playerId2);
 
     games.push({
-      timestamp: new Date(),
+      timestamp: faker.date.between(dateLow, dateHigh),
       results: {
         create: results,
       }
@@ -67,7 +70,7 @@ function randomGames(playerId1: string, playerId2: string) {
 function randomMatch(playerId1: string, playerId2: string) {
   return {
     rom: RomVersion.NTSC,
-    timestamp: new Date(),
+    timestamp: faker.date.between(dateLow, dateHigh),
     type: MatchType.FRIENDLY,
     games: {
       create: randomGames(playerId1, playerId2)

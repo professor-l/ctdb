@@ -56,20 +56,21 @@ export const pullMatches = async (
   context: GraphQLContext
 ): Promise<MatchIM[]> => {
 
-  const match = await context.prisma.match.findUnique({
+  const oldestMatch = await context.prisma.match.findUnique({
     where: {
       id: oldestMatchId
     }
   });
 
-  if (match == null)
+  if (!oldestMatch)
     return [];
 
-  // get all matches newer than that
+  // get all matches newer than oldestMatch and older than newestMatch (if
+  // provided)
   const m = await context.prisma.match.findMany({
     where: {
       timestamp: {
-        gte: match.timestamp
+        gte: oldestMatch.timestamp,
       }
     },
     include: {
@@ -78,6 +79,9 @@ export const pullMatches = async (
           results: true,
         }
       }
+    },
+    orderBy: {
+      timestamp: "asc",
     }
   });
 
@@ -167,10 +171,24 @@ export const writeEloSnapshots = async (
   snapshots: EloSnapshotIM[],
   context: GraphQLContext
 ) => {
-  return context.prisma.eloSnapshot.createMany({
-    data: snapshots,
-  });
+  const upserts = snapshots.map(snapshot =>
+    context.prisma.eloSnapshot.upsert({
+      where: {
+        playerId_matchId_versionId: {
+          playerId: snapshot.playerId,
+          matchId: snapshot.matchId,
+          versionId: snapshot.versionId,
+        },
+      },
+      // update existing snapshot if it exists
+      update: snapshot,
+      create: snapshot,
+    })
+  );
+
+  return Promise.all(upserts);
 };
+
 
 const matchConverter = (
   m: Match & {games: (Game & {results: Result[]})[]}
