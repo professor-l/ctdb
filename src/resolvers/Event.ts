@@ -5,6 +5,7 @@ const event = {
   
   organization: async (
     parent: Event,
+    _args: { }, // eslint-disable-line
     context: GraphQLContext
   ) => {
     return context.prisma.organization.findUnique({
@@ -14,6 +15,7 @@ const event = {
 
   matches: async (
     parent: Event,
+    _args: { }, // eslint-disable-line
     context: GraphQLContext
   ) => {
     return context.prisma.event.findUnique({

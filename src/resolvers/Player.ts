@@ -5,6 +5,7 @@ const player = {
 
   eloHistory: async (
     parent: Player,
+    _args: { }, // eslint-disable-line
     context: GraphQLContext
   ) => {
     return context.prisma.eloSnapshot.findMany({
@@ -17,6 +18,7 @@ const player = {
 
   results: async (
     parent: Player,
+    _args: { }, // eslint-disable-line
     context: GraphQLContext
   ) => {
     return context.prisma.player.findUnique({
