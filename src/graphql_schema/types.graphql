@@ -32,6 +32,7 @@ type Result {
     player: Player!
     game: Game!
 
+    styles: [Playstyle!]
     rank: Int!
     score: Int
 }

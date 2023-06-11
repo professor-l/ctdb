@@ -9,7 +9,7 @@ const createMatchByEventName = async (
       timestamp: Date,
       video?: string,
       type?: MatchType,
-      rom: RomVersion,
+      rom?: RomVersion,
     },
   },
   context: GraphQLContext

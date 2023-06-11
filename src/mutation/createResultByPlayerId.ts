@@ -16,7 +16,17 @@ const createResultByPlayerId = async (
 ) => {
 
   const r = await context.prisma.result.create({
-    data: args.payload,
+    data: {
+      player: {
+        connect: { id: args.payload.playerId },
+      },
+      game: {
+        connect: { id: args.payload.gameId },
+      },
+      rank: args.payload.rank,
+      styles: args.payload.playstyles,
+      score: args.payload.score,
+    },
   });
 
   return r;
