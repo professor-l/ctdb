@@ -1,6 +1,6 @@
 import { server } from '../src';
 import { gql } from 'mercurius-codegen';
-import globals from './globals';
+import state from './testState';
 
 export const testGetters = () => describe("Test getters", () => {
   describe("Query: getAllOrganizations", () => {
@@ -13,7 +13,7 @@ export const testGetters = () => describe("Test getters", () => {
         }
       `;
 
-      const expectedNames = { name: globals.TEST_ORG_NAME };
+      const expectedNames = { name: state.ORG1.name };
 
       const response = await server.inject().post("/graphql").body({ query });
       const parsed = JSON.parse(response["body"]);
