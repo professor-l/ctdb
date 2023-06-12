@@ -7,7 +7,7 @@ const getEventByName = async (
   context: GraphQLContext
 ) => {
 
-  return context.prisma.event.findMany({
+  return context.prisma.event.findUnique({
     where: {
       name: args.name
     }

@@ -8,7 +8,7 @@ type Query {
 
     # Events
     getEventById(id: String): Event
-    getEventByName(name: String): [Event]
+    getEventByName(name: String): Event
     getEventsByEdition(edition: String): [Event]
 
     # Matches

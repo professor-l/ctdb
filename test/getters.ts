@@ -112,7 +112,7 @@ export const testGetters = () => describe("Test getters", () => {
         variables: { name: state.EVENT1.name },
       });
       const parsed = JSON.parse(response["body"]);
-      expect(parsed.data.getEventByName).toContainEqual(
+      expect(parsed.data.getEventByName).toMatchObject(
         {
           id: state.EVENT1.id,
           name: state.EVENT1.name,
