@@ -14,7 +14,7 @@ export default {
   PLAYER1: {
     eloName: "fractal161",
     name: null,
-    playstyles: [],
+    playstyles: [] as Playstyle[],
     pronouns: [],
     country: null,
     id: "",
