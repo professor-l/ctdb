@@ -1,5 +1,6 @@
 import { GraphQLContext } from "../context";
 
+// TODO: make findUnique?
 const getEventByName = async (
   parent: unknown,
   args: { name: string },

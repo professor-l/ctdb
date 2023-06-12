@@ -1,7 +1,7 @@
 import { server } from '../src';
 import { gql } from 'mercurius-codegen';
 import state from './testState';
-import { MatchType, Playstyle, Pronoun, RomVersion } from '../src/types';
+import { MatchType, RomVersion } from '../src/types';
 
 // state is updated to reflect newly created objects, so we can use it
 // to store the ids of created objects (TODO: this is kind of bad?)
@@ -9,27 +9,48 @@ export const testCreators = () => describe("Test creators", () => {
   describe("createOrganization", () => {
     it ("should create an org", async () => {
       const query = gql`
-        mutation ($orgName: String!) {
+        mutation (
+          $orgName: String!,
+          $desc: String!
+        ) {
           createOrganization(payload: {
             name: $orgName,
-            description: "I am a test org."
+            description: $desc
           }) {
             id
             name
+            description
           }
         }
       `;
   
       const response = await server.inject().post("/graphql").body({
         query,
-        variables: { orgName: state.ORG1.name },
+        variables: {
+          orgName: state.ORG1.name,
+          desc: state.ORG1.description,
+        },
       });
       const parsed = JSON.parse(response["body"]);
 
       expect(parsed.data.createOrganization).toMatchObject(
-        { name: state.ORG1.name }
+        {
+          name: state.ORG1.name,
+          description: state.ORG1.description,
+        }
       );
       state.ORG1.id = parsed.data.createOrganization.id;
+
+      // create second org for later usage, no need to test
+      const otherResponse = await server.inject().post("/graphql").body({
+        query,
+        variables: {
+          orgName: state.ORG2.name,
+          desc: state.ORG2.description,
+        },
+      });
+      const otherParsed = JSON.parse(otherResponse["body"]);
+      state.ORG2.id = otherParsed.data.createOrganization.id;
     });
   });
 
@@ -97,8 +118,9 @@ export const testCreators = () => describe("Test creators", () => {
         }
       );
       // separate check for arrays
-      expect(parsed.data.createPlayer.playstyles.sort()).toStrictEqual(
-        state.PLAYER2.playstyles.sort()
+      expect(parsed.data.createPlayer.playstyles.length).toEqual(2);
+      expect(parsed.data.createPlayer.playstyles).toEqual(
+        expect.arrayContaining(state.PLAYER2.playstyles)
       );
       state.PLAYER2.id = parsed.data.createPlayer.id;
     });
@@ -617,9 +639,9 @@ export const testCreators = () => describe("Test creators", () => {
           score: state.RESULT2.score,
         }
       );
-      expect(parsed.data.createResultByPlayerName.styles.sort())
-        .toStrictEqual(
-          state.RESULT2.playstyles.sort()
+      expect(parsed.data.createResultByPlayerName.styles.length).toEqual(1);
+      expect(parsed.data.createResultByPlayerName.styles).toStrictEqual(
+          expect.arrayContaining(state.RESULT2.playstyles)
         );
       state.RESULT2.id = parsed.data.createResultByPlayerName.id;
     });
@@ -704,16 +726,15 @@ export const testCreators = () => describe("Test creators", () => {
         },
       });
       const parsed = JSON.parse(response["body"]);
-      console.log(parsed);
       expect(parsed.data.createResultByPlayerId).toMatchObject(
         {
           rank: state.RESULT4.rank,
           score: state.RESULT4.score,
         }
       );
-      expect(parsed.data.createResultByPlayerId.styles.sort())
-        .toStrictEqual(
-          state.RESULT4.playstyles.sort()
+      expect(parsed.data.createResultByPlayerId.styles.length).toEqual(1);
+      expect(parsed.data.createResultByPlayerId.styles).toStrictEqual(
+          expect.arrayContaining(state.RESULT4.playstyles)
         );
       state.RESULT4.id = parsed.data.createResultByPlayerId.id;
     });

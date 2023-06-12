@@ -3,19 +3,36 @@ import { Playstyle, Pronoun, MatchType, RomVersion } from "../src/types";
 export default {
   ORG1: {
     name: "TETRIS TEST ORG",
+    description: "I am a test org",
+    id: "",
+  },
+  ORG2: {
+    name: "Tetris World Order",
+    description: "The one true society",
     id: "",
   },
   PLAYER1: {
     eloName: "fractal161",
+    name: null,
+    playstyles: [],
+    pronouns: [],
+    country: null,
     id: "",
   },
   PLAYER2: {
     eloName: "EricICX",
+    name: null,
     playstyles: [ Playstyle.ROLL, Playstyle.DAS ],
+    pronouns: [],
+    country: null,
     id: "",
   },
   PLAYER3: {
     eloName: "Professor L",
+    name: null,
+    playstyles: [],
+    pronouns: [],
+    country: null,
     id: "",
   },
   PLAYER4: {
@@ -41,6 +58,7 @@ export default {
   MATCH1: {
     eventName: "",
     timestamp: "1989-03-14T12:00:00-05:00",
+    video: null,
     type: "",
     rom: "",
     id: ""
@@ -56,6 +74,7 @@ export default {
   MATCH3: {
     eventId: "",
     timestamp: "1989-03-14T12:20:00-05:00",
+    video: null,
     type: "",
     rom: "",
     id: ""
