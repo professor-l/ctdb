@@ -570,7 +570,7 @@ export const testCreators = () => describe("Test creators", () => {
           {
             id
             rank
-            styles
+            playstyles
             score
           }
         }
@@ -586,10 +586,11 @@ export const testCreators = () => describe("Test creators", () => {
         },
       });
       const parsed = JSON.parse(response["body"]);
+      console.log(parsed);
       expect(parsed.data.createResultByPlayerName).toMatchObject(
         {
           rank: state.RESULT1.rank,
-          styles: [],
+          playstyles: [],
           score: null,
         }
       );
@@ -615,7 +616,7 @@ export const testCreators = () => describe("Test creators", () => {
           {
             id
             rank
-            styles
+            playstyles
             score
           }
         }
@@ -639,8 +640,8 @@ export const testCreators = () => describe("Test creators", () => {
           score: state.RESULT2.score,
         }
       );
-      expect(parsed.data.createResultByPlayerName.styles.length).toEqual(1);
-      expect(parsed.data.createResultByPlayerName.styles).toStrictEqual(
+      expect(parsed.data.createResultByPlayerName.playstyles.length).toEqual(1);
+      expect(parsed.data.createResultByPlayerName.playstyles).toStrictEqual(
           expect.arrayContaining(state.RESULT2.playstyles)
         );
       state.RESULT2.id = parsed.data.createResultByPlayerName.id;
@@ -663,7 +664,7 @@ export const testCreators = () => describe("Test creators", () => {
           {
             id
             rank
-            styles
+            playstyles
             score
           }
         }
@@ -682,7 +683,7 @@ export const testCreators = () => describe("Test creators", () => {
       expect(parsed.data.createResultByPlayerId).toMatchObject(
         {
           rank: state.RESULT3.rank,
-          styles: [],
+          playstyles: [],
           score: null,
         }
       );
@@ -708,7 +709,7 @@ export const testCreators = () => describe("Test creators", () => {
           {
             id
             rank
-            styles
+            playstyles
             score
           }
         }
@@ -732,8 +733,8 @@ export const testCreators = () => describe("Test creators", () => {
           score: state.RESULT4.score,
         }
       );
-      expect(parsed.data.createResultByPlayerId.styles.length).toEqual(1);
-      expect(parsed.data.createResultByPlayerId.styles).toStrictEqual(
+      expect(parsed.data.createResultByPlayerId.playstyles.length).toEqual(1);
+      expect(parsed.data.createResultByPlayerId.playstyles).toStrictEqual(
           expect.arrayContaining(state.RESULT4.playstyles)
         );
       state.RESULT4.id = parsed.data.createResultByPlayerId.id;

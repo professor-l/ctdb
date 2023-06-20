@@ -78,7 +78,7 @@ model Result {
   game        Game @relation(fields: [gameId], references: [id])
   gameId      String
 
-  styles      Playstyle[]
+  playstyles  Playstyle[]
   rank        Int
   score       Int?
 

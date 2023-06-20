@@ -29,7 +29,7 @@ function randomResults(playerId1: string, playerId2: string) {
           id: playerId1
         }
       },
-      styles: sampleSize(Playstyle),
+      playstyles: sampleSize(Playstyle),
       score: scores[0],
       rank: r,
     },
@@ -39,7 +39,7 @@ function randomResults(playerId1: string, playerId2: string) {
           id: playerId2
         }
       },
-      styles: sampleSize(Playstyle),
+      playstyles: sampleSize(Playstyle),
       score: scores[1],
       rank: (r * -1) + 3,
     }

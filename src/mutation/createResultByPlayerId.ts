@@ -24,7 +24,7 @@ const createResultByPlayerId = async (
         connect: { id: args.payload.gameId },
       },
       rank: args.payload.rank,
-      styles: args.payload.playstyles,
+      playstyles: args.payload.playstyles,
       score: args.payload.score,
     },
   });
