@@ -9,7 +9,7 @@ const createPlayer = async (
       name?: string,
       playstyles?: Playstyle[],
       pronouns?: Pronoun[],
-      counrty?: string,
+      country?: string,
     },
   },
   context: GraphQLContext,

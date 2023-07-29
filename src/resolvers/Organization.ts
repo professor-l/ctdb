@@ -5,7 +5,8 @@ const org = {
 
   events: async (
     parent: Organization,
-    context: GraphQLContext
+    _args: { }, // eslint-disable-line
+    context: GraphQLContext,
   ) => {
     return context.prisma.organization.findUnique({
       where: { id: parent.id },

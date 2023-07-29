@@ -5,6 +5,7 @@ const result = {
 
   player: async (
     parent: Result,
+    _args: { }, // eslint-disable-line
     context: GraphQLContext
   ) => {
     return context.prisma.player.findUnique({
@@ -14,6 +15,7 @@ const result = {
 
   game: async (
     parent: Result,
+    _args: { }, // eslint-disable-line
     context: GraphQLContext
   ) => {
     return context.prisma.game.findUnique({

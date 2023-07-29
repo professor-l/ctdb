@@ -5,6 +5,7 @@ const match = {
 
   games: async (
     parent: Match,
+    _args: { }, // eslint-disable-line
     context: GraphQLContext
   ) => {
     return context.prisma.match.findUnique({
@@ -14,6 +15,7 @@ const match = {
 
   event: async (
     parent: Match,
+    _args: { }, // eslint-disable-line
     context: GraphQLContext
   ) => {
     return context.prisma.event.findUnique({
@@ -32,6 +34,7 @@ const match = {
 
   eloChanges: async (
     parent: Match,
+    _args: { }, // eslint-disable-line
     context: GraphQLContext
   ) => {
     return context.prisma.eloSnapshot.findMany({

@@ -5,6 +5,7 @@ const elos = {
 
   player: async (
     parent: EloSnapshot,
+    _args: { }, // eslint-disable-line
     context: GraphQLContext
   ) => {
     return context.prisma.player.findUnique({
@@ -14,6 +15,7 @@ const elos = {
 
   match: async (
     parent: EloSnapshot,
+    _args: { }, // eslint-disable-line
     context: GraphQLContext
   ) => {
     return context.prisma.match.findUnique({

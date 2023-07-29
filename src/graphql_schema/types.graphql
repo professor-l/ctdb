@@ -8,9 +8,11 @@ type Organization {
 type Event {
     id: String!
     name: String!
-    edition: String!
+    edition: String
     organization: Organization
     matches: [Match!]!
+    start: DateTime
+    end: DateTime
 }
 
 type Player {
@@ -30,6 +32,7 @@ type Result {
     player: Player!
     game: Game!
 
+    playstyles: [Playstyle!]
     rank: Int!
     score: Int
 }

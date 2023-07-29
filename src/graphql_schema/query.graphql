@@ -8,7 +8,7 @@ type Query {
 
     # Events
     getEventById(id: String): Event
-    getEventByName(name: String): [Event]
+    getEventByName(name: String): Event
     getEventsByEdition(edition: String): [Event]
 
     # Matches
@@ -16,7 +16,7 @@ type Query {
     getMatchesByPlayer(eloName: String): [Match!]!
 
     # Players
-    getPlayerByName(name: String!): Player
+    getPlayerByName(eloName: String!): Player
     getPlayerById(id: String!): Player
     # TODO: Privileged query
     getAllPlayers: [Player!]!

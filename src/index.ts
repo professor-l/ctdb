@@ -53,8 +53,10 @@ server.route({
 });
 
 
-async function main() {    
-  server.listen({port: 3000 }, () => {
+async function main() {
+  // quick fix to make docker configuration work
+  // see https://www.fastify.io/docs/latest/Reference/Server/#listen
+  server.listen({ port: 3000, host: '0.0.0.0' }, () => {
     console.log(`Server is running on http://localhost:3000/`);
   });
 }
