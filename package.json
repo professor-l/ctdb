@@ -7,7 +7,7 @@
     "repl": "dotenv -e .env.development -- ts-node scripts/dev-repl.ts",
     "dev": "dotenv -e .env.development -- ts-node-dev --exit-child src/index.ts",
     "start": "dotenv -e .env.development -- ts-node src/index.ts",
-    "test": "./test.sh",
+    "test": "scripts/test.sh",
     "intake": "dotenv -e .env.development -- ts-node scripts/intake/index.ts"
   },
   "prisma": {
