@@ -263,7 +263,6 @@ export const testResolvers = () => describe("Test resolvers", () => {
         }
       });
       const parsed = JSON.parse(response["body"]);
-      console.log(parsed);
       expect(parsed.data.getOrganizationByName).toMatchObject(
         {
           events: [{ id: state.EVENT2.id }]

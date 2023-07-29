@@ -7,7 +7,7 @@
     "repl": "dotenv -e .env.development -- ts-node scripts/dev-repl.ts",
     "dev": "dotenv -e .env.development -- ts-node-dev --exit-child src/index.ts",
     "start": "dotenv -e .env.development -- ts-node src/index.ts",
-    "test": "docker-compose up -d test_db && sleep 1 && dotenv -e .env.test -- prisma migrate reset --force --skip-seed && dotenv -e .env.test -- jest --config jest.config.ts ./test --detectOpenHandles && docker-compose stop test_db && docker-compose rm -f test_db",
+    "test": "./test.sh",
     "intake": "dotenv -e .env.development -- ts-node scripts/intake/index.ts"
   },
   "prisma": {

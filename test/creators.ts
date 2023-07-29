@@ -586,7 +586,6 @@ export const testCreators = () => describe("Test creators", () => {
         },
       });
       const parsed = JSON.parse(response["body"]);
-      console.log(parsed);
       expect(parsed.data.createResultByPlayerName).toMatchObject(
         {
           rank: state.RESULT1.rank,
