@@ -24,7 +24,9 @@ export const testUpdaters = () => describe("Test updaters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: {
           oldEloName: state.PLAYER1.eloName,
@@ -66,7 +68,9 @@ export const testUpdaters = () => describe("Test updaters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: {
           eloName: state.PLAYER1.eloName,
@@ -107,7 +111,9 @@ export const testUpdaters = () => describe("Test updaters", () => {
         }
       `;
       // at this point PLAYER2 has ROLL and DAS
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: {
           eloName: state.PLAYER2.eloName,
@@ -160,7 +166,9 @@ export const testUpdaters = () => describe("Test updaters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: {
           eloName: state.PLAYER2.eloName,
@@ -206,7 +214,9 @@ export const testUpdaters = () => describe("Test updaters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: {
           eloName: state.PLAYER1.eloName,

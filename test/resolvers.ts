@@ -26,7 +26,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: {
           eloName: state.PLAYER1.eloName
@@ -50,7 +52,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: {
         }
@@ -75,7 +79,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: { name: state.EVENT2.name }
       });
@@ -95,7 +101,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: { name: state.EVENT2.name }
       });
@@ -128,7 +136,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({ query });
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({ query });
       const parsed = JSON.parse(response["body"]);
       // i am sorry
       const resultIds = parsed.data.getAllMatches
@@ -159,7 +169,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({ query });
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({ query });
       const parsed = JSON.parse(response["body"]);
       const matchIds = parsed.data.getAllMatches
         .filter((match: { id: string }) => match.id === state.MATCH1.id)[0]
@@ -182,7 +194,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({ query });
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({ query });
       const parsed = JSON.parse(response["body"]);
       const gameIds = parsed.data.getAllMatches
         .filter((match: { id: string }) => match.id === state.MATCH1.id)[0]
@@ -206,7 +220,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({ query });
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({ query });
       const parsed = JSON.parse(response["body"]);
       const eventIds = parsed.data.getAllMatches
         .map((match: { event: { id: string } }) => match.event.id);
@@ -231,7 +247,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: {
         }
@@ -256,7 +274,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: {
           name: state.ORG1.name
@@ -284,7 +304,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: {
         }
@@ -307,7 +329,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({
         query,
         variables: { eloName: state.PLAYER1.eloName }
       });
@@ -337,7 +361,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({ query });
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({ query });
       const parsed = JSON.parse(response["body"]);
       const playerIds = parsed.data.getAllMatches
         .filter((match: { id: string }) => match.id === state.MATCH1.id)[0]
@@ -367,7 +393,9 @@ export const testResolvers = () => describe("Test resolvers", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({ query });
+      const response = await server.inject()
+       .headers({ passphrase: process.env.PASSPHRASE })
+       .post("/graphql").body({ query });
       const parsed = JSON.parse(response["body"]);
       const gameIds = parsed.data.getAllMatches
         .filter((match: { id: string }) => match.id === state.MATCH1.id)[0]
