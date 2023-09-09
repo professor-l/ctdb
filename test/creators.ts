@@ -24,7 +24,8 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
   
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           orgName: state.ORG1.name,
@@ -42,7 +43,8 @@ export const testCreators = () => describe("Test creators", () => {
       state.ORG1.id = parsed.data.createOrganization.id;
 
       // create second org for later usage, no need to test
-      const otherResponse = await server.inject().post("/graphql").body({
+      const otherResponse = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           orgName: state.ORG2.name,
@@ -68,7 +70,8 @@ export const testCreators = () => describe("Test creators", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: { eloName: state.PLAYER1.eloName }
       });
@@ -101,7 +104,8 @@ export const testCreators = () => describe("Test creators", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           eloName: state.PLAYER2.eloName,
@@ -140,7 +144,8 @@ export const testCreators = () => describe("Test creators", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: { eloName: state.PLAYER3.eloName },
       });
@@ -182,7 +187,8 @@ export const testCreators = () => describe("Test creators", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           eloName: state.PLAYER4.eloName,
@@ -224,7 +230,8 @@ export const testCreators = () => describe("Test creators", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           name: state.EVENT1.name
@@ -268,7 +275,8 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
       state.EVENT2.orgId = state.ORG1.id;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           name: state.EVENT2.name,
@@ -319,7 +327,8 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
       state.MATCH1.eventName = state.EVENT2.name;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           eventName: state.MATCH1.eventName,
@@ -370,7 +379,8 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
       state.MATCH2.eventName = state.EVENT2.name;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           eventName: state.MATCH2.eventName,
@@ -418,7 +428,8 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
       state.MATCH3.eventId = state.EVENT2.id;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           eventId: state.MATCH3.eventId,
@@ -469,7 +480,8 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
       state.MATCH4.eventId = state.EVENT1.id;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           eventId: state.MATCH4.eventId,
@@ -510,7 +522,8 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
       state.GAME1.matchId = state.MATCH1.id;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: { matchId: state.GAME1.matchId },
       });
@@ -537,7 +550,8 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
       state.GAME2.matchId = state.MATCH1.id;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           matchId: state.GAME2.matchId,
@@ -577,7 +591,8 @@ export const testCreators = () => describe("Test creators", () => {
       `;
       state.RESULT1.gameId = state.GAME1.id;
       state.RESULT1.playerName = state.PLAYER1.eloName;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           gameId: state.RESULT1.gameId,
@@ -622,7 +637,8 @@ export const testCreators = () => describe("Test creators", () => {
       `;
       state.RESULT2.gameId = state.GAME1.id;
       state.RESULT2.playerName = state.PLAYER2.eloName;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           gameId: state.RESULT2.gameId,
@@ -670,7 +686,8 @@ export const testCreators = () => describe("Test creators", () => {
       `;
       state.RESULT3.gameId = state.GAME2.id;
       state.RESULT3.playerId = state.PLAYER1.id;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           gameId: state.RESULT3.gameId,
@@ -715,7 +732,8 @@ export const testCreators = () => describe("Test creators", () => {
       `;
       state.RESULT4.gameId = state.GAME2.id;
       state.RESULT4.playerId = state.PLAYER2.id;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           gameId: state.RESULT4.gameId,

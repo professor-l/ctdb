@@ -17,7 +17,8 @@ export const testGetters = () => describe("Test getters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: { name: state.ORG1.name },
       });
@@ -43,7 +44,8 @@ export const testGetters = () => describe("Test getters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: { id: state.ORG2.id, },
       });
@@ -70,7 +72,8 @@ export const testGetters = () => describe("Test getters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({ query });
+      const response = await server.inject()
+       .post("/graphql").body({ query });
       const parsed = JSON.parse(response["body"]);
       expect(parsed.data.getAllOrganizations.length).toEqual(2);
       expect(parsed.data.getAllOrganizations).toEqual(
@@ -107,7 +110,8 @@ export const testGetters = () => describe("Test getters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: { name: state.EVENT1.name },
       });
@@ -141,7 +145,8 @@ export const testGetters = () => describe("Test getters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           id: state.EVENT2.id
@@ -185,7 +190,8 @@ export const testGetters = () => describe("Test getters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           edition: state.EVENT2.edition
@@ -225,7 +231,8 @@ export const testGetters = () => describe("Test getters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
         },
@@ -293,7 +300,8 @@ export const testGetters = () => describe("Test getters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           eloName: state.PLAYER1.eloName
@@ -335,7 +343,8 @@ export const testGetters = () => describe("Test getters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
           eloName: state.PLAYER1.eloName
@@ -369,7 +378,8 @@ export const testGetters = () => describe("Test getters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: { id: state.PLAYER4.id },
       });
@@ -405,7 +415,8 @@ export const testGetters = () => describe("Test getters", () => {
           }
         }
       `;
-      const response = await server.inject().post("/graphql").body({
+      const response = await server.inject()
+       .post("/graphql").body({
         query,
         variables: {
         },
