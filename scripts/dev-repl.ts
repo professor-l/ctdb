@@ -14,8 +14,6 @@ import {
 } from "./src/elo/util/dbInterface";
 import { eloPipeline } from "./src/elo/pipeline";
 
-let context: GraphQLContext;
-
 const testElo = async (
     context: GraphQLContext
 ) => {
@@ -42,6 +40,6 @@ const populate = async (
 console.log("welcome to the ctdb developer repl! available functions:");
 console.log(">     pullMatches, pullComputedElos, eloPipeline")
 console.log("> if you would like access to a GraphQL context,")
-console.log("> please run \`context = await c();\`");
+console.log("> please run \`let context = await c();\`");
 process.stdout.write("> ");
 `);
