@@ -60,7 +60,7 @@ type EloSnapshot {
     player: Player!
     match: Match!
     index: Int!
-    version: String!
+    versionId: String!
     victor: Boolean!
     newElo: Float!
 }
