@@ -18,7 +18,6 @@ export const testGetters = () => describe("Test getters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: { name: state.ORG1.name },
@@ -46,7 +45,6 @@ export const testGetters = () => describe("Test getters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: { id: state.ORG2.id, },
@@ -75,7 +73,6 @@ export const testGetters = () => describe("Test getters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({ query });
       const parsed = JSON.parse(response["body"]);
       expect(parsed.data.getAllOrganizations.length).toEqual(2);
@@ -114,7 +111,6 @@ export const testGetters = () => describe("Test getters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: { name: state.EVENT1.name },
@@ -150,7 +146,6 @@ export const testGetters = () => describe("Test getters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -196,7 +191,6 @@ export const testGetters = () => describe("Test getters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -238,7 +232,6 @@ export const testGetters = () => describe("Test getters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -308,7 +301,6 @@ export const testGetters = () => describe("Test getters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -352,7 +344,6 @@ export const testGetters = () => describe("Test getters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -388,7 +379,6 @@ export const testGetters = () => describe("Test getters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: { id: state.PLAYER4.id },
@@ -426,7 +416,6 @@ export const testGetters = () => describe("Test getters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {

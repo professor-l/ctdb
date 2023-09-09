@@ -25,7 +25,6 @@ export const testCreators = () => describe("Test creators", () => {
       `;
   
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -45,7 +44,6 @@ export const testCreators = () => describe("Test creators", () => {
 
       // create second org for later usage, no need to test
       const otherResponse = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -73,7 +71,6 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: { eloName: state.PLAYER1.eloName }
@@ -108,7 +105,6 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -149,7 +145,6 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: { eloName: state.PLAYER3.eloName },
@@ -193,7 +188,6 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -237,7 +231,6 @@ export const testCreators = () => describe("Test creators", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -283,7 +276,6 @@ export const testCreators = () => describe("Test creators", () => {
       `;
       state.EVENT2.orgId = state.ORG1.id;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -336,7 +328,6 @@ export const testCreators = () => describe("Test creators", () => {
       `;
       state.MATCH1.eventName = state.EVENT2.name;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -389,7 +380,6 @@ export const testCreators = () => describe("Test creators", () => {
       `;
       state.MATCH2.eventName = state.EVENT2.name;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -439,7 +429,6 @@ export const testCreators = () => describe("Test creators", () => {
       `;
       state.MATCH3.eventId = state.EVENT2.id;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -492,7 +481,6 @@ export const testCreators = () => describe("Test creators", () => {
       `;
       state.MATCH4.eventId = state.EVENT1.id;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -535,7 +523,6 @@ export const testCreators = () => describe("Test creators", () => {
       `;
       state.GAME1.matchId = state.MATCH1.id;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: { matchId: state.GAME1.matchId },
@@ -564,7 +551,6 @@ export const testCreators = () => describe("Test creators", () => {
       `;
       state.GAME2.matchId = state.MATCH1.id;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -606,7 +592,6 @@ export const testCreators = () => describe("Test creators", () => {
       state.RESULT1.gameId = state.GAME1.id;
       state.RESULT1.playerName = state.PLAYER1.eloName;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -653,7 +638,6 @@ export const testCreators = () => describe("Test creators", () => {
       state.RESULT2.gameId = state.GAME1.id;
       state.RESULT2.playerName = state.PLAYER2.eloName;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -703,7 +687,6 @@ export const testCreators = () => describe("Test creators", () => {
       state.RESULT3.gameId = state.GAME2.id;
       state.RESULT3.playerId = state.PLAYER1.id;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -750,7 +733,6 @@ export const testCreators = () => describe("Test creators", () => {
       state.RESULT4.gameId = state.GAME2.id;
       state.RESULT4.playerId = state.PLAYER2.id;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {

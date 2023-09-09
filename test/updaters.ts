@@ -25,7 +25,6 @@ export const testUpdaters = () => describe("Test updaters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -69,7 +68,6 @@ export const testUpdaters = () => describe("Test updaters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -112,7 +110,6 @@ export const testUpdaters = () => describe("Test updaters", () => {
       `;
       // at this point PLAYER2 has ROLL and DAS
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -167,7 +164,6 @@ export const testUpdaters = () => describe("Test updaters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {
@@ -215,7 +211,6 @@ export const testUpdaters = () => describe("Test updaters", () => {
         }
       `;
       const response = await server.inject()
-       .headers({ passphrase: process.env.PASSPHRASE })
        .post("/graphql").body({
         query,
         variables: {

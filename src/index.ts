@@ -37,32 +37,34 @@ server.route({
       return;
     }
 
-    // check for correct passphrase
-    if ("passphrase" in request.headers) {
-      const passphrase = request.headers["passphrase"];
-      // if passphrase is incorrect, send error
-      // TODO: check that the env exists before starting server?
-      if (passphrase !== process.env.PASSPHRASE) {
+    // only check for passphrase if .env file has a nonempty value
+    if (process.env.PASSPHRASE && process.env.PASSPHRASE != "") {
+      if ("passphrase" in request.headers) {
+        const passphrase = request.headers["passphrase"];
+        // if passphrase is incorrect, send error
+        // TODO: check that the env exists before starting server?
+        if (passphrase !== process.env.PASSPHRASE) {
+          reply.status(400).send({
+              "errors": [
+                {
+                  "message": "incorrect passphrase"
+                }
+              ]
+            });
+          return;
+        }
+      }
+      else {
+        // send error indicating that passphrase is needed
         reply.status(400).send({
             "errors": [
               {
-                "message": "incorrect passphrase"
+                "message": "must provide passphrase header"
               }
             ]
           });
         return;
       }
-    }
-    else {
-      // send error indicating that passphrase is needed
-      reply.status(400).send({
-          "errors": [
-            {
-              "message": "must provide passphrase header"
-            }
-          ]
-        });
-      return;
     }
 
     const { operationName, query, variables } = getGraphQLParameters(request);
