@@ -11,7 +11,7 @@ import getEventsByEdition from "./getEventsByEdition";
 import getAllMatches from "./getAllMatches";
 import getMatchesByPlayer from "./getMatchesByPlayer";
 
-import getPlayerByName from "./getPlayerByName";
+import getPlayerByEloName from "./getPlayerByEloName";
 import getPlayerById from "./getPlayerById";
 import getAllPlayers from "./getAllPlayers";
 
@@ -28,7 +28,7 @@ const query = {
   getAllMatches,
   getMatchesByPlayer,
 
-  getPlayerByName,
+  getPlayerByEloName,
   getPlayerById,
   getAllPlayers,
 };

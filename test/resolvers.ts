@@ -16,7 +16,7 @@ export const testResolvers = () => describe("Test resolvers", () => {
     it("should resolve player", async () => {
       const query = gql`
         query ($eloName: String!) {
-          getPlayerByName(eloName: $eloName) {
+          getPlayerByEloName(eloName: $eloName) {
             eloHistory {
               id
               version
@@ -311,7 +311,7 @@ export const testResolvers = () => describe("Test resolvers", () => {
     it("should resolve results", async () => {
       const query = gql`
         query ($eloName: String!) {
-          getPlayerByName(eloName: $eloName) {
+          getPlayerByEloName(eloName: $eloName) {
             results {
               id
             }
@@ -324,7 +324,7 @@ export const testResolvers = () => describe("Test resolvers", () => {
         variables: { eloName: state.PLAYER1.eloName }
       });
       const parsed = JSON.parse(response["body"]);
-      const resultIds = parsed.data.getPlayerByName.results
+      const resultIds = parsed.data.getPlayerByEloName.results
         .map((result: { id: string }) => result.id);
       expect(resultIds).toEqual(
         expect.arrayContaining([ state.RESULT1.id, state.RESULT3.id ])

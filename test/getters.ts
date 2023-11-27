@@ -325,13 +325,13 @@ export const testGetters = () => describe("Test getters", () => {
     });
   });
 
-  describe("getPlayerByName", () => {
+  describe("getPlayerByEloName", () => {
     it ("should return player", async () => {
       const query = gql`
         query(
           $eloName: String!
         ){
-          getPlayerByName(
+          getPlayerByEloName(
             eloName: $eloName
           ){
             id
@@ -351,7 +351,7 @@ export const testGetters = () => describe("Test getters", () => {
         },
       });
       const parsed = JSON.parse(response["body"]);
-      expect(parsed.data.getPlayerByName).toMatchObject(
+      expect(parsed.data.getPlayerByEloName).toMatchObject(
         {
           id: state.PLAYER1.id,
           eloName: state.PLAYER1.eloName,
