@@ -16,7 +16,7 @@ type Query {
     getMatchesByPlayer(eloName: String): [Match!]!
 
     # Players
-    getPlayerByName(eloName: String!): Player
+    getPlayerByEloName(eloName: String!): Player
     getPlayerById(id: String!): Player
     # TODO: Privileged query
     getAllPlayers: [Player!]!

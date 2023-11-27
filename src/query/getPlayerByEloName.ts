@@ -1,6 +1,6 @@
 import { GraphQLContext } from "../context";
 
-const getPlayerByName = async (
+const getPlayerByEloName = async (
   parent: unknown,
   args: { eloName: string, },
   context: GraphQLContext
@@ -14,4 +14,4 @@ const getPlayerByName = async (
 
 };
 
-export default getPlayerByName;
+export default getPlayerByEloName;
